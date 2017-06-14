@@ -509,6 +509,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _name = 'purchase.order.line'
     _description = 'Purchase Order Line'
+    _order = 'sequence, id'
 
     @api.depends('product_qty', 'price_unit', 'taxes_id')
     def _compute_amount(self):
@@ -555,13 +556,39 @@ class PurchaseOrderLine(models.Model):
         line = super(PurchaseOrderLine, self).create(values)
         if line.order_id.state == 'purchase':
             line.order_id._create_picking()
+            msg = _("Extra line with %s ") % (line.product_id.display_name,)
+            line.order_id.message_post(body=msg)
         return line
 
     @api.multi
     def write(self, values):
+        orders = False
+        if 'product_qty' in values:
+            changed_lines = self.filtered(lambda x: x.order_id.state == 'purchase')
+            if changed_lines:
+                orders = changed_lines.mapped('order_id')
+                for order in orders:
+                    order_lines = changed_lines.filtered(lambda x: x.order_id == order)
+                    msg = ""
+                    if any([values['product_qty'] < x.product_qty for x in order_lines]):
+                        msg += "<b>" + _('The ordered quantity has been decreased. Do not forget to take it into account on your bills and receipts.') + '</b><br/>'
+                    msg += "<ul>"
+                    for line in order_lines:
+                        msg += "<li> %s:" % (line.product_id.display_name,)
+                        msg += "<br/>" + _("Ordered Quantity") + ": %s -> %s <br/>" % (line.product_qty, float(values['product_qty']),)
+                        if line.product_id.type in ('product', 'consu'):
+                            msg += _("Received Quantity") + ": %s <br/>" % (line.qty_received,)
+                        msg += _("Billed Quantity") + ": %s <br/></li>" % (line.qty_invoiced,)
+                    msg += "</ul>"
+                    order.message_post(body=msg)
+        # Update expectged date of corresponding moves
+        if 'date_planned' in values:
+            self.env['stock.move'].search([
+                ('purchase_line_id', 'in', self.ids), ('state', '!=', 'done')
+            ]).write({'date_expected': values['date_planned']})
         result = super(PurchaseOrderLine, self).write(values)
-        orders = self.filtered(lambda x: x.order_id.state == 'purchase').mapped('order_id')
-        orders._create_picking()
+        if orders:
+            orders._create_picking()
         return result
 
     name = fields.Text(string='Description', required=True)
@@ -955,30 +982,41 @@ class ProcurementOrder(models.Model):
             'group_id': group
         }
 
+    def _make_po_select_supplier(self, suppliers):
+        """ Method intended to be overridden by customized modules to implement any logic in the
+            selection of supplier.
+        """
+        return suppliers[0]
+
+    def _make_po_get_domain(self, partner):
+        gpo = self.rule_id.group_propagation_option
+        group = (gpo == 'fixed' and self.rule_id.group_id) or \
+                (gpo == 'propagate' and self.group_id) or False
+
+        domain = (
+            ('partner_id', '=', partner.id),
+            ('state', '=', 'draft'),
+            ('picking_type_id', '=', self.rule_id.picking_type_id.id),
+            ('company_id', '=', self.company_id.id),
+            ('dest_address_id', '=', self.partner_dest_id.id))
+        if group:
+            domain += (('group_id', '=', group.id),)
+        return domain
+
     @api.multi
     def make_po(self):
         cache = {}
         res = []
         for procurement in self:
-            suppliers = procurement.product_id.seller_ids.filtered(lambda r: not r.product_id or r.product_id == procurement.product_id)
+            suppliers = procurement.product_id.seller_ids\
+                .filtered(lambda r: (not r.company_id or r.company_id == procurement.company_id) and (not r.product_id or r.product_id == procurement.product_id))
             if not suppliers:
                 procurement.message_post(body=_('No vendor associated to product %s. Please set one to fix this procurement.') % (procurement.product_id.name))
                 continue
-            supplier = suppliers[0]
+            supplier = procurement._make_po_select_supplier(suppliers)
             partner = supplier.name
 
-            gpo = procurement.rule_id.group_propagation_option
-            group = (gpo == 'fixed' and procurement.rule_id.group_id) or \
-                    (gpo == 'propagate' and procurement.group_id) or False
-
-            domain = (
-                ('partner_id', '=', partner.id),
-                ('state', '=', 'draft'),
-                ('picking_type_id', '=', procurement.rule_id.picking_type_id.id),
-                ('company_id', '=', procurement.company_id.id),
-                ('dest_address_id', '=', procurement.partner_dest_id.id))
-            if group:
-                domain += (('group_id', '=', group.id),)
+            domain = procurement._make_po_get_domain(partner)
 
             if domain in cache:
                 po = cache[domain]
@@ -1049,7 +1087,7 @@ class ProductTemplate(models.Model):
 
     @api.model
     def _get_buy_route(self):
-        buy_route = self.env.ref('purchase.route_warehouse0_buy')
+        buy_route = self.env.ref('purchase.route_warehouse0_buy', raise_if_not_found=False)
         if buy_route:
             return buy_route.ids
         return []
