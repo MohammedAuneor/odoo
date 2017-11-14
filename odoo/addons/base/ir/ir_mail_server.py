@@ -299,6 +299,7 @@ class IrMailServer(models.Model):
         msg['Date'] = formatdate()
         # Custom headers may override normal headers or provide additional ones
         for key, value in headers.iteritems():
+          #  if key not in ["Precedence","Return-Path","List-Id","List-Post"]:
             msg[ustr(key).encode('utf-8')] = encode_header(value)
 
         if subtype == 'html' and not body_alternative and html2text:
