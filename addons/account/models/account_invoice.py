@@ -213,7 +213,7 @@ class AccountInvoice(models.Model):
     move_name = fields.Char(string='Journal Entry Name', readonly=False,
         default=False, copy=False,
         help="Technical field holding the number given to the invoice, automatically set when the invoice is validated then stored to set the same number again if the invoice is cancelled, set to draft and re-validated.")
-    reference = fields.Char(string='Vendor Reference',
+    reference = fields.Char(string='Vendor Reference', copy=False,
         help="The partner reference of this invoice.", readonly=True, states={'draft': [('readonly', False)]})
     reference_type = fields.Selection('_get_reference_type', string='Payment Reference',
         required=True, readonly=True, states={'draft': [('readonly', False)]},
@@ -913,14 +913,17 @@ class AccountInvoice(models.Model):
             inv.with_context(ctx).write(vals)
         return True
 
-    @api.multi
-    def invoice_validate(self):
+    def _check_invoice_reference(self):
         for invoice in self:
             #refuse to validate a vendor bill/refund if there already exists one with the same reference for the same partner,
             #because it's probably a double encoding of the same bill/refund
             if invoice.type in ('in_invoice', 'in_refund') and invoice.reference:
                 if self.search([('type', '=', invoice.type), ('reference', '=', invoice.reference), ('company_id', '=', invoice.company_id.id), ('commercial_partner_id', '=', invoice.commercial_partner_id.id), ('id', '!=', invoice.id)]):
                     raise UserError(_("Duplicated vendor reference detected. You probably encoded twice the same vendor bill/refund."))
+
+    @api.multi
+    def invoice_validate(self):
+        self._check_invoice_reference()
         return self.write({'state': 'open'})
 
     @api.model
@@ -1156,7 +1159,9 @@ class AccountInvoice(models.Model):
             res.setdefault(line.tax_id.tax_group_id, 0.0)
             res[line.tax_id.tax_group_id] += line.amount
         res = sorted(res.items(), key=lambda l: l[0].sequence)
-        res = map(lambda l: (l[0].name, l[1]), res)
+        res = [(
+            r[0].name, r[1], formatLang(self.with_context(lang=self.partner_id.lang).env, r[1], currency_obj=currency)
+        ) for r in res]
         return res
 
 
@@ -1311,9 +1316,6 @@ class AccountInvoiceLine(models.Model):
                 self.price_unit = 0.0
             domain['uom_id'] = []
         else:
-            # Use the purchase uom by default
-            self.uom_id = self.product_id.uom_po_id
-
             if part.lang:
                 product = self.product_id.with_context(lang=part.lang)
             else:
