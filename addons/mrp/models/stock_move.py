@@ -13,7 +13,9 @@ class StockMoveLine(models.Model):
     workorder_id = fields.Many2one('mrp.workorder', 'Work Order')
     production_id = fields.Many2one('mrp.production', 'Production Order')
     lot_produced_id = fields.Many2one('stock.production.lot', 'Finished Lot')
-    lot_produced_qty = fields.Float('Quantity Finished Product', help="Informative, not used in matching")
+    lot_produced_qty = fields.Float(
+        'Quantity Finished Product', digits=dp.get_precision('Product Unit of Measure'),
+        help="Informative, not used in matching")
     done_wo = fields.Boolean('Done for Work Order', default=True, help="Technical Field which is False when temporarily filled in in work order")  # TDE FIXME: naming
     done_move = fields.Boolean('Move Done', related='move_id.is_done', store=True)  # TDE FIXME: naming
 
@@ -149,7 +151,7 @@ class StockMove(models.Model):
         # all grouped in the same picking.
         if not self.picking_type_id:
             return self
-        bom = self.env['mrp.bom'].sudo()._bom_find(product=self.product_id)
+        bom = self.env['mrp.bom'].sudo()._bom_find(product=self.product_id, company_id=self.company_id.id)
         if not bom or bom.type != 'phantom':
             return self
         phantom_moves = self.env['stock.move']
@@ -193,6 +195,12 @@ class StockMove(models.Model):
             move_lines = self.move_line_ids.filtered(lambda ml: ml.lot_id == lot and not ml.lot_produced_id)
         else:
             move_lines = self.move_line_ids.filtered(lambda ml: not ml.lot_id and not ml.lot_produced_id)
+
+        # Sanity check: if the product is a serial number and `lot` is already present in the other
+        # consumed move lines, raise.
+        if lot and self.product_id.tracking == 'serial' and lot in self.move_line_ids.filtered(lambda ml: ml.qty_done).mapped('lot_id'):
+            raise UserError(_('You cannot consume the same serial number twice. Please correct the serial numbers encoded.'))
+
         for ml in move_lines:
             rounding = ml.product_uom_id.rounding
             if float_compare(qty_to_add, 0, precision_rounding=rounding) <= 0:
