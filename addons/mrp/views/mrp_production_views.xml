@@ -89,7 +89,7 @@
                                 <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="product.group_uom" attrs="{'readonly': [('has_moves', '=', True)]}"/>
                                 <button type="action"
                                     name="%(mrp.action_change_production_qty)d"
-                                    string="Update" states="confirmed,planned,progress" class="oe_link" attrs="{'invisible': [('state','=','done')]}"/>
+                                    string="Update" states="confirmed,planned,progress" class="oe_link"/>
                             </div>
                             <field name="bom_id"
                                 domain="['&amp;', '|',
@@ -150,7 +150,7 @@
                         <page string="Miscellaneous">
                             <group>
                                 <group groups="stock.group_stock_multi_locations">
-                                    <field name="picking_type_id" attrs="{'readonly': [('has_moves', '=', True)]}"/>
+                                    <field name="picking_type_id" domain="[('code', '=', 'mrp_operation')]" attrs="{'readonly': [('has_moves', '=', True)]}"/>
                                     <field name="location_src_id" domain="[('usage','=','internal')]" attrs="{'readonly': [('has_moves', '=', True)]}"/>
                                     <field name="location_dest_id" domain="[('usage','=','internal')]" attrs="{'readonly': [('has_moves', '=', True)]}"/>
                                 </group>
