@@ -21,7 +21,7 @@
       </xpath>
     </template>
 
-    <template id="payment_delivery" name="Delivery Costs" inherit_id="website_sale.payment">
+    <template id="payment_delivery" name="Delivery Costs" inherit_id="theme_bigbag.payment">
         <xpath expr="//div[@id='payment_method']" position="before">
             <div t-if="deliveries" class="row" id="delivery_carrier">
                 <div class="col-lg-5 col-sm-6">
