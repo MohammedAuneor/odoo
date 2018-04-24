@@ -5,11 +5,11 @@
 # Translators:
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2016
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2016
-# Martin Trigaux <mat@odoo.com>, 2016
+# Martin Trigaux, 2016
 # Bole <bole@dajmi5.com>, 2016
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2016
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2016
-# Tina Milas <tina@uvid.hr>, 2016
+# Tina Milas, 2016
 # Mario Jureša <mario.juresa@uvid.hr>, 2016
 # Jasmina Otročak <jasmina@uvid.hr>, 2016
 # Davor Bojkić <davor.bojkic@storm.hr>, 2016
@@ -250,7 +250,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"[objekt s napomenom: %s - %s]"
+"[objekt s referencom: %s - %s]"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_invoice_bba
@@ -766,6 +766,9 @@ msgid ""
 "    Resource management for Project\n"
 "    "
 msgstr ""
+"\n"
+"    Upravljanje resursima za Projekte\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_ebay
@@ -1484,6 +1487,16 @@ msgid ""
 "    - Regional State listings\n"
 "    "
 msgstr ""
+"\n"
+"Osnovni modul za Etiopijsku lokalizaciju\n"
+"======================================\n"
+"\n"
+"Ovo je najnovija Etiopijska OpenERP lokalizacija i sastoji se od:\n"
+"    - Kontnog plana\n"
+"    - Porezne strukture\n"
+"    - Strukture poreza po odbitku\n"
+"    - Regionalnih državnih oglasa\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_br
@@ -16528,6 +16541,12 @@ msgid "Thailand - Accounting Reports"
 msgstr "Tajland - Računovodstvena izvješća"
 
 #. module: base
+#: code:addons/base/res/res_users.py:288
+#, python-format
+msgid "The \"App Switcher\" action cannot be selected as home action."
+msgstr ""
+
+#. module: base
 #: model:ir.model.fields,help:base.field_res_country_code
 msgid ""
 "The ISO country code in two chars. \n"
@@ -17536,8 +17555,8 @@ msgid ""
 "Unable to install module \"%s\" because an external dependency is not met: "
 "%s"
 msgstr ""
-"Nije moguće instalirati modul \"% s\", jer vanjska ovisnost nije "
-"zadovoljena:% s"
+"Nije moguće instalirati modul \"%s\", jer vanjska ovisnost nije zadovoljena:"
+" %s"
 
 #. module: base
 #: code:addons/base/module/module.py:316
@@ -17554,8 +17573,8 @@ msgid ""
 "Unable to upgrade module \"%s\" because an external dependency is not met: "
 "%s"
 msgstr ""
-"Nije moguće nadograditi modul \"% s\", jer vanjska ovisnost nije "
-"zadovoljena:% s"
+"Nije moguće nadograditi modul \" %s\", jer vanjska ovisnost nije "
+"zadovoljena: %s"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_uncategorized
