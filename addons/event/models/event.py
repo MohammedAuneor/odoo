@@ -272,10 +272,13 @@ class EventEvent(models.Model):
         return res
 
     @api.one
-    def mail_attendees(self, template_id, force_send=False, filter_func=lambda self: True):
+    def mail_attendees(self, template_id, force_send=False, filter_func=lambda self: self.state != 'cancel'):
         for attendee in self.registration_ids.filtered(filter_func):
             self.env['mail.template'].browse(template_id).send_mail(attendee.id, force_send=force_send)
 
+    @api.multi
+    def _is_event_registrable(self):
+        return True
 
 class EventRegistration(models.Model):
     _name = 'event.registration'

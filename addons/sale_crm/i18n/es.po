@@ -5,11 +5,11 @@
 # Translators:
 # Martin Trigaux <mat@odoo.com>, 2016
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
-# David Perez <david@closemarketing.es>, 2016
 # Alejandro Die Sanchis <marketing@domatix.com>, 2016
 # Antonio Trueba <atgayol@gmail.com>, 2016
 # Javier Ramirez <elbomba887@gmail.com>, 2016
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2016
+# David Perez <david@closemarketing.es>, 2016
 # Miguel Orueta <mo@landoo.es>, 2016
 # Yeison Vargas <yeison.vargas@megaterios.co>, 2017
 # Gelo Joga Landoo <gj@landoo.es>, 2017
@@ -188,12 +188,12 @@ msgstr "Mensaje para albarán de stock"
 #. module: sale_crm
 #: model:ir.ui.view,arch_db:sale_crm.crm_case_form_view_oppor
 msgid "New Quotation"
-msgstr "Nuevo Presupuesto"
+msgstr "Nuevo presupuesto"
 
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_crm_lead_sale_number
 msgid "Number of Quotations"
-msgstr "Número de cotizaciones"
+msgstr "Número de presupuestos"
 
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_sale_order_opportunity_id

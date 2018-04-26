@@ -8,18 +8,19 @@
 # Jose Manuel <admin@jaboweb.com>, 2016
 # Luis M. Triana <luis.triana@jarsa.com.mx>, 2016
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2016
+# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2016
+# Gustavo Valverde <g.valverde02@gmail.com>, 2016
 # Alejandro Die Sanchis <marketing@domatix.com>, 2016
 # Cristóbal Martí Oliver <info@moblesmarti.com>, 2016
 # Glen Sojo <inactive+glen.sojo@transifex.com>, 2016
 # Inigo Zuluaga <inigo_zuluaga@yahoo.es>, 2016
 # Antonio Trueba <atgayol@gmail.com>, 2016
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
 # Carles Antoli <carlesantoli@hotmail.com>, 2016
 # oihane <oihanecruce@gmail.com>, 2016
 # David Perez <david@closemarketing.es>, 2016
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
 # Ana Juaristi <ajuaristio@gmail.com>, 2016
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2016
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
 # Ivan Nieto <ivan.n.s@tuta.io>, 2016
 # Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2016
 # Daniel Santibáñez Polanco <dansanti@gmail.com>, 2016
@@ -27,7 +28,7 @@
 # Alejandro Santana <alejandrosantana@anubia.es>, 2016
 # Sergio Flores <vitavitae1@gmail.com>, 2016
 # Gafic SLP Albert Cabedo (GAFIC, SLP) <albertgafic@gmail.com>, 2016
-# Gelo Joga Landoo <gj@landoo.es>, 2017
+# Gelo Joga Landoo <gj@landoo.es>, 2016
 # RGB Consulting <odoo@rgbconsulting.com>, 2017
 # David Arnold <blaggacao@users.noreply.github.com>, 2017
 # Nicole Kist <nki@odoo.com>, 2017
@@ -54,7 +55,7 @@ msgstr "ABONO"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order_nbr_lines
 msgid "# of Lines"
-msgstr "# de líneas"
+msgstr "Nº de líneas"
 
 #. module: point_of_sale
 #. openerp-web
@@ -371,8 +372,8 @@ msgid ""
 "Allows the cashier to quickly give a percentage sale discount for all the "
 "sales order to a customer"
 msgstr ""
-"Permite al cajero que de un porcentaje de descuento por toda la orden de "
-"venta para un cliente"
+"Permite al cajero establecer un porcentaje de descuento a todos los pedidos "
+"de venta para un cliente"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config_settings_module_pos_loyalty
@@ -631,7 +632,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:511
 #, python-format
 msgid "Change"
-msgstr "Cambiar"
+msgstr "Cambio"
 
 #. module: point_of_sale
 #. openerp-web
@@ -645,7 +646,7 @@ msgstr "Cambiar Cajero"
 #: code:addons/point_of_sale/static/src/js/screens.js:1143
 #, python-format
 msgid "Change Customer"
-msgstr "Cambiar cliente"
+msgstr "Cambiar Cliente"
 
 #. module: point_of_sale
 #. openerp-web
@@ -1148,7 +1149,7 @@ msgstr "Descargar Órdenes No Pagadas"
 #: code:addons/point_of_sale/static/src/xml/pos.xml:509
 #, python-format
 msgid "Due"
-msgstr "Vencido"
+msgstr "Debe"
 
 #. module: point_of_sale
 #: model:product.product,name:point_of_sale.partner_product_9
@@ -2706,7 +2707,7 @@ msgstr "Pedidos de ventas"
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_user_id
 #: model:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
 msgid "Salesman"
-msgstr "Vendedor"
+msgstr "Comercial"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order_user_id
@@ -3100,7 +3101,7 @@ msgstr "Tel.:"
 #: code:addons/point_of_sale/static/src/xml/pos.xml:510
 #, python-format
 msgid "Tendered"
-msgstr "Licitado"
+msgstr "Entregado"
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/models/pos_order.py:254
@@ -3337,7 +3338,7 @@ msgid ""
 "There is no receivable account defined to make payment for the partner: "
 "\"%s\" (id:%d)."
 msgstr ""
-"No hay una cuenta contable por cobrar definida para hacer el pago de esta "
+"No hay una cuenta contable a cobrar definida para hacer el pago de esta "
 "empresa: \"%s\" (id: %d)."
 
 #. module: point_of_sale
@@ -3537,7 +3538,7 @@ msgstr "Descuento total"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order_price_total
 msgid "Total Price"
-msgstr "Precio total"
+msgstr "Importe total"
 
 #. module: point_of_sale
 #. openerp-web
