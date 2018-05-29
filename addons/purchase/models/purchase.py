@@ -92,7 +92,7 @@ class PurchaseOrder(models.Model):
     @api.depends('picking_ids', 'picking_ids.state')
     def _compute_is_shipped(self):
         for order in self:
-            if order.picking_ids and all([x.state == 'done' for x in order.picking_ids]):
+            if order.picking_ids and all([x.state in ['done', 'cancel'] for x in order.picking_ids]):
                 order.is_shipped = True
 
     READONLY_STATES = {
@@ -323,6 +323,7 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def print_quotation(self):
+        self.write({'state': "sent"})
         return self.env.ref('purchase.report_purchase_quotation').report_action(self)
 
     @api.multi
@@ -1012,20 +1013,20 @@ class ProcurementRule(models.Model):
     def _prepare_purchase_order(self, product_id, product_qty, product_uom, origin, values, partner):
         schedule_date = self._get_purchase_schedule_date(values)
         purchase_date = self._get_purchase_order_date(product_id, product_qty, product_uom, values, partner, schedule_date)
-        fpos = self.env['account.fiscal.position'].with_context(company_id=values['company_id'].id).get_fiscal_position(partner.id)
+        fpos = self.env['account.fiscal.position'].with_context(force_company=values['company_id'].id).get_fiscal_position(partner.id)
 
         gpo = self.group_propagation_option
         group = (gpo == 'fixed' and self.group_id.id) or \
-                (gpo == 'propagate' and values['group_id'].id) or False
+                (gpo == 'propagate' and values.get('group_id') and values['group_id'].id) or False
 
         return {
             'partner_id': partner.id,
             'picking_type_id': self.picking_type_id.id,
             'company_id': values['company_id'].id,
-            'currency_id': partner.property_purchase_currency_id.id or self.env.user.company_id.currency_id.id,
+            'currency_id': partner.with_context(force_company=values['company_id'].id).property_purchase_currency_id.id or self.env.user.company_id.currency_id.id,
             'dest_address_id': values.get('partner_dest_id', False) and values['partner_dest_id'].id,
             'origin': origin,
-            'payment_term_id': partner.property_supplier_payment_term_id.id,
+            'payment_term_id': partner.with_context(force_company=values['company_id'].id).property_supplier_payment_term_id.id,
             'date_order': purchase_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             'fiscal_position_id': fpos,
             'group_id': group
@@ -1041,7 +1042,7 @@ class ProcurementRule(models.Model):
         domain = super(ProcurementRule, self)._make_po_get_domain(values, partner)
         gpo = self.group_propagation_option
         group = (gpo == 'fixed' and self.group_id) or \
-                (gpo == 'propagate' and values['group_id']) or False
+                (gpo == 'propagate' and 'group_id' in values and values['group_id']) or False
 
         domain += (
             ('partner_id', '=', partner.id),
