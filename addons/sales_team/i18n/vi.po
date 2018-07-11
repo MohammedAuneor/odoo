@@ -6,7 +6,7 @@
 # lam nguyen <lamev.inc@gmail.com>, 2016
 # trieu le <trieu.lth@gmail.com>, 2016
 # fanha99 <fanha99@hotmail.com>, 2016
-# Martin Trigaux <mat@odoo.com>, 2016
+# Martin Trigaux, 2016
 # Hoang Loc Le Huu <loclhh@gmail.com>, 2016
 # son dang <son.dang@doda100.com>, 2016
 # Phạm Lân <phamquanglan@gmail.com>, 2016
@@ -60,7 +60,7 @@ msgstr ""
 #. module: sales_team
 #: model:ir.ui.view,arch_db:sales_team.crm_team_salesteams_view_kanban
 msgid "<span>New</span>"
-msgstr ""
+msgstr "<span> Mới</span>"
 
 #. module: sales_team
 #: model:ir.ui.view,arch_db:sales_team.crm_team_salesteams_view_kanban
@@ -175,7 +175,7 @@ msgstr "Quốc gia"
 #. module: sales_team
 #: model:ir.ui.menu,name:sales_team.menu_country_group
 msgid "Country Group"
-msgstr ""
+msgstr "Nhóm quốc gia"
 
 #. module: sales_team
 #. openerp-web
@@ -301,7 +301,7 @@ msgstr "Sửa lần cuối vào"
 #: code:addons/sales_team/static/src/xml/sales_team_dashboard.xml:188
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Tháng trước"
 
 #. module: sales_team
 #: model:ir.model.fields,field_description:sales_team.field_crm_team_write_uid
@@ -340,7 +340,7 @@ msgstr "Thêm"
 #. module: sales_team
 #: model:ir.ui.view,arch_db:sales_team.crm_team_view_form
 msgid "More Info"
-msgstr ""
+msgstr "Thêm thông tin"
 
 #. module: sales_team
 #. openerp-web
