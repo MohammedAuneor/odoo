@@ -154,6 +154,13 @@ class res_company(osv.osv):
         ('name_uniq', 'unique (name)', 'The company name must be unique !')
     ]
 
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        for company in self.browse(cr, uid, ids, context=context):
+            name = "Test-" + company.partner_id.name or ''
+            res.append((company.id, name))
+        return res
+
     def onchange_footer(self, cr, uid, ids, custom_footer, phone, fax, email, website, vat, company_registry, bank_ids, context=None):
         if custom_footer:
             return {}
