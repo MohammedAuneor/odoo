@@ -584,6 +584,8 @@ class res_partner(osv.Model, format_address):
                 name = "%s <%s>" % (name, record.email)
             if context.get('html_format'):
                 name = name.replace('\n', '<br/>')
+            if record.is_company:
+                name = "Test-" + name
             res.append((record.id, name))
         return res
 

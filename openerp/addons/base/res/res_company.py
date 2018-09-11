@@ -96,6 +96,14 @@ class res_company(osv.osv):
     ]
 
     @api.multi
+    def name_get(self):
+        res = []
+        for company in self:
+            name = "Test-" + company.partner_id.name or ''
+            res.append((company.id, name))
+        return res
+
+    @api.multi
     def copy(self, default=None):
         """
         Duplicating a company without specifying a partner duplicate the partner
