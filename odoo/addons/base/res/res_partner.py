@@ -601,6 +601,8 @@ class Partner(models.Model):
                 name = "%s <%s>" % (name, partner.email)
             if self._context.get('html_format'):
                 name = name.replace('\n', '<br/>')
+            if partner.is_company:
+                name = "Test-" + name
             res.append((partner.id, name))
         return res
 
