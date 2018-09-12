@@ -143,7 +143,11 @@ class pos_config(osv.osv):
                 result.append((record.id, record.name+' ('+_('not used')+')'))
                 continue
             session = record.session_ids[0]
-            result.append((record.id, record.name + ' ('+session.user_id.name+')')) #, '+states[session.state]+')'))
+            result.append((record.id, "!!!TEST!!!-" + record.name + ' ('+session.user_id.name+')')) #, '+states[session.state]+')'))
+            if (record.receipt_header or "").split('\n', 1)[0] != "!!!TEST!!!":
+                record.receipt_header = "!!!TEST!!!\n" + (record.receipt_header or "")
+            if (record.receipt_footer or "").split('\n', 1)[0] != "!!!TEST!!!":
+                record.receipt_footer = "!!!TEST!!!\n" + (record.receipt_footer or "")
         return result
 
     def _default_sale_journal(self, cr, uid, context=None):
