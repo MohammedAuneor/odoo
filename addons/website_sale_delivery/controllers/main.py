@@ -11,7 +11,7 @@ class WebsiteSaleDelivery(WebsiteSale):
     def payment(self, **post):
         order = request.website.sale_get_order()
         carrier_id = post.get('carrier_id')
-        if carrier_id:
+        if carrier_id and carrier_id != 'False':
             carrier_id = int(carrier_id)
         if order:
             order._check_carrier_quotation(force_carrier_id=carrier_id)
