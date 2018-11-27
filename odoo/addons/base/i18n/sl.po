@@ -3,11 +3,11 @@
 # * base
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2016
+# Martin Trigaux, 2016
 # Matjaž Mozetič <m.mozetic@matmoz.si>, 2016
 # jl2035 <jaka.luthar@gmail.com>, 2016
 # Dejan Sraka <dejan.sraka@picolabs.si>, 2016
-# Borut Jures <inactive+borut@transifex.com>, 2016
+# Borut Jures, 2016
 # Simon Hohler <simon.hohler@gmail.com>, 2016
 # Vida Potočnik <vida.potocnik@mentis.si>, 2016
 msgid ""
@@ -12027,7 +12027,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:base.field_res_partner_supplier
 #: model:ir.model.fields,field_description:base.field_res_users_supplier
 msgid "Is a Vendor"
-msgstr ""
+msgstr "Je dobavitelj"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_attachment_public
@@ -13091,6 +13091,18 @@ msgstr "Urejanje članstva"
 #: model:ir.module.module,shortdesc:base.module_note_pad
 msgid "Memos pad"
 msgstr "Blok z memorandumi"
+
+#. module: base
+#: code:addons/base/ir/ir_model.py:382
+#, python-format
+msgid "Model %s does not exist"
+msgstr ""
+
+#. module: base
+#: code:addons/base/ir/ir_model.py:383
+#, python-format
+msgid "Please specify a valid model for the object relation"
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_ui_menu_name
@@ -18461,13 +18473,13 @@ msgstr "Vozilo, leasing, zavarovanja, stroški"
 #. module: base
 #: model:res.partner.category,name:base.res_partner_category_1
 msgid "Vendor"
-msgstr "Prodajalec"
+msgstr "Dobavitelj"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_partner_supplier_form
 #: model:ir.ui.view,arch_db:base.view_res_partner_filter
 msgid "Vendors"
-msgstr "Prodajalci"
+msgstr "Dobavitelji"
 
 #. module: base
 #: model:res.country,name:base.ve

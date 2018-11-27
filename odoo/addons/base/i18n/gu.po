@@ -8,13 +8,14 @@
 # Turkesh Patel <turkesh4friends@gmail.com>, 2018
 # Gaurav Marsoniya <marsoniyagaurav@gmail.com>, 2018
 # Dharmraj Jhala <dja@openerp.com>, 2018
+# Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-20 07:12+0000\n"
 "PO-Revision-Date: 2017-10-20 07:12+0000\n"
-"Last-Translator: Dharmraj Jhala <dja@openerp.com>, 2018\n"
+"Last-Translator: Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11915,6 +11916,18 @@ msgid "Memos pad"
 msgstr ""
 
 #. module: base
+#: code:addons/base/ir/ir_model.py:382
+#, python-format
+msgid "Model %s does not exist"
+msgstr ""
+
+#. module: base
+#: code:addons/base/ir/ir_model.py:383
+#, python-format
+msgid "Please specify a valid model for the object relation"
+msgstr ""
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_ir_ui_menu_name
 #: model:ir.ui.view,arch_db:base.edit_menu
 #: model:ir.ui.view,arch_db:base.edit_menu_access
@@ -12957,7 +12970,7 @@ msgstr ""
 #: code:addons/base/res/res_users.py:728 code:addons/base/res/res_users.py:888
 #, python-format
 msgid "Other"
-msgstr ""
+msgstr "અન્ય"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_extra
