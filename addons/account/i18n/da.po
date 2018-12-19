@@ -8,7 +8,6 @@
 # Nicolaj Helmer Hansen <nhh@softwarehuset.com>, 2018
 # jonas jensen <j.jensen@tcomp.dk>, 2018
 # JonathanStein <jstein@image.dk>, 2018
-# Kenneth Hansen <kenneth@vkdata.dk>, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
 # Martin Trigaux, 2018
 # Per Rasmussen <perhgrasmussen@gmail.com>, 2018
@@ -17,7 +16,9 @@
 # Jarnhold Nattestad <nattestads@gmail.com>, 2018
 # Ejner Sønniksen <ejner@vkdata.dk>, 2018
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2018
+# Kenneth Hansen <kenneth@vkdata.dk>, 2018
 # lhmflexerp <lhm@flexerp.dk>, 2018
+# Simon Andersen <simon@vkdata.dk>, 2018
 # Sanne Kristensen <sanne@vkdata.dk>, 2018
 # 
 msgid ""
@@ -86,7 +87,7 @@ msgstr "%s (kopi)"
 #: code:addons/account/models/account.py:688
 #, python-format
 msgid "%s Sequence"
-msgstr "Nummerserie"
+msgstr "%s Nummerserie"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -6001,7 +6002,7 @@ msgstr "Juni"
 #: selection:res.company,account_setup_coa_state:0
 #: selection:res.company,account_setup_fy_data_state:0
 msgid "Just done"
-msgstr ""
+msgstr "Udført"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_tax_adjustments_wizard__reason
@@ -7883,7 +7884,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Please use the following communication for your payment :"
-msgstr ""
+msgstr "Anvend venligst følgende oplysninger i din betaling:"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
