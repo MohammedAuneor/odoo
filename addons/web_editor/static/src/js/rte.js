@@ -159,7 +159,7 @@ var History = function History ($editable) {
 
         if (aUndo[pos]) {
             pos = Math.min(pos, aUndo.length);
-            aUndo.splice(Math.max(pos,1), aUndo.length);
+            aUndo.splice(pos, aUndo.length);
         }
 
         // => make a snap when the user change editable zone (because: don't make snap for each keydown)
@@ -271,15 +271,24 @@ var RTE = Widget.extend({
      * @param {DOM} target where the dom is changed is editable zone
      */
     historyRecordUndo: function ($target, event, internal_history) {
+        $target = $($target);
         var rng = range.create();
         var $editable = $(rng && rng.sc).closest(".o_editable");
         if (!rng || !$editable.length) {
-            $editable = $($target).closest(".o_editable");
+            $editable = $target.closest(".o_editable");
             rng = range.create($target.closest("*")[0],0);
         } else {
             rng = $editable.data('range') || rng;
         }
-        rng.select();
+        try {
+            // TODO this line might break for unknown reasons. I suppose that
+            // the created range is an invalid one. As it might be tricky to
+            // adapt that line and that it is not a critical one, temporary fix
+            // is to ignore the errors that this generates.
+            rng.select();
+        } catch (e) {
+            console.log('error', e);
+        }
         history.recordUndo($editable, event, internal_history);
     },
     /**
@@ -317,9 +326,12 @@ var RTE = Widget.extend({
         });
 
         // start element observation
-        $(document).on('content_changed', '.o_editable', function (event) {
+        $(document).on('content_changed', '.o_editable', function (ev) {
             self.trigger('change', this);
-            $(this).addClass('o_dirty');
+            if (!ev.__isDirtyHandled) {
+                $(this).addClass('o_dirty');
+                ev.__isDirtyHandled = true;
+            }
         });
 
         $('#wrapwrap, .o_editable').on('click.rte', '*', this, this.onClick.bind(this));
@@ -348,6 +360,10 @@ var RTE = Widget.extend({
 
         this.__saved = {}; // list of allready saved views and data
 
+
+        $('.o_editable')
+            .destroy()
+            .removeClass('o_editable o_is_inline_editable');
         var defs = $('.o_dirty')
             .removeAttr('contentEditable')
             .removeClass('o_dirty oe_carlos_danger o_is_inline_editable')
@@ -502,6 +518,14 @@ var RTE = Widget.extend({
             return;
         }
 
+        // Removes strange _moz_abspos attribute when it appears. Cannot
+        // find another solution which works in all cases. A grabber still
+        // appears at the same time which I did not manage to remove.
+        // TODO find a complete and better solution
+        _.defer(function () {
+            $editable.find('[_moz_abspos]').removeAttr('_moz_abspos');
+        });
+
         if ($target.is('a')) {
             /**
              * Remove content editable everywhere and add it on the link only so that characters can be added
@@ -566,8 +590,8 @@ var RTE = Widget.extend({
     onEnableEditableArea: function ($editable) {
     },
 
-    onMouseup: function (event) {
-        var $target = $(event.target);
+    onMouseup: function (ev) {
+        var $target = $(ev.target);
         var $editable = $target.closest('.o_editable');
 
         if (!$editable.length) {
@@ -579,26 +603,16 @@ var RTE = Widget.extend({
             self.historyRecordUndo($target, 'activate',  true);
         });
 
-        // To Fix Google Chrome Tripleclick Issue, which selects the ending
-        // whitespace characters (so Tripleclicking then typing text will remove
-        // the whole paragraph instead of its content).
-        // http://stackoverflow.com/questions/38467334/why-does-google-chrome-always-add-space-after-selected-text
-        if ($.browser.chrome === true && event.originalEvent.detail === 3) {
-            var currentSelection = range.create();
-            if (currentSelection.sc.parentNode === currentSelection.ec) {
-                _selectSC(currentSelection);
-            } else if (currentSelection.eo === 0) {
-                var $hasNext = $(currentSelection.sc).parent();
-                while (!$hasNext.next().length && !$hasNext.is('body')) {
-                    $hasNext = $hasNext.parent();
-                }
-                if ($hasNext.next()[0] === currentSelection.ec) {
-                    _selectSC(currentSelection);
-                }
-            }
-        }
-        function _selectSC(selection) {
-            range.create(selection.sc, selection.so, selection.sc, selection.sc.length).select();
+        // Browsers select different content from one to another after a
+        // triple click (especially: if triple-clicking on a paragraph on
+        // Chrome, blank characters of the element following the paragraph are
+        // selected too)
+        //
+        // The triple click behavior is reimplemented for all browsers here
+        if (ev.originalEvent.detail === 3) {
+            // Select the whole content inside the deepest DOM element that was
+            // triple-clicked
+            range.create(ev.target, 0, ev.target, ev.target.childNodes.length).select();
         }
     },
 
