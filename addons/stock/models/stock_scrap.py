@@ -121,6 +121,8 @@ class StockScrap(models.Model):
 
     def action_validate(self):
         self.ensure_one()
+        if self.product_id.type != 'product':
+            return self.do_scrap()
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         available_qty = sum(self.env['stock.quant']._gather(self.product_id,
                                                             self.location_id,
@@ -128,7 +130,8 @@ class StockScrap(models.Model):
                                                             self.package_id,
                                                             self.owner_id,
                                                             strict=True).mapped('quantity'))
-        if float_compare(available_qty, self.scrap_qty, precision_digits=precision) >= 0:
+        scrap_qty = self.product_uom_id._compute_quantity(self.scrap_qty, self.product_id.uom_id)
+        if float_compare(available_qty, scrap_qty, precision_digits=precision) >= 0:
             return self.do_scrap()
         else:
             return {
