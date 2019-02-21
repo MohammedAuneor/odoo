@@ -159,7 +159,7 @@ class Product(models.Model):
         if self.env.context.get('company_owned', False):
             company_id = self.env.user.company_id.id
             return (
-                [('location_id.company_id', '=', company_id)],
+                [('location_id.company_id', '=', company_id), ('location_id.usage', 'in', ['internal', 'transit'])],
                 [('location_id.company_id', '=', False), ('location_dest_id.company_id', '=', company_id)],
                 [('location_id.company_id', '=', company_id), ('location_dest_id.company_id', '=', False),
             ])
@@ -260,7 +260,9 @@ class Product(models.Model):
 
         # TODO: Still optimization possible when searching virtual quantities
         ids = []
-        for product in self.with_context(prefetch_fields=False).search([]):
+        # Order the search on `id` to prevent the default order on the product name which slows
+        # down the search because of the join on the translation table to get the translated names.
+        for product in self.with_context(prefetch_fields=False).search([], order='id'):
             if OPERATORS[operator](product[field], value):
                 ids.append(product.id)
         return [('id', 'in', ids)]
