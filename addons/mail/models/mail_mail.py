@@ -282,7 +282,11 @@ class MailMail(models.Model):
                 if mail.state != 'outgoing':
                     if mail.state != 'exception' and mail.auto_delete:
                         mail.sudo().unlink()
-                    continue
+
+
+                        
+
+                        rrcontinue
 
                 # remove attachments if user send the link with the access_token
                 body = mail.body_html or ''
@@ -294,20 +298,30 @@ class MailMail(models.Model):
                 # `datas` (binary field) could bloat the browse cache, triggerring
                 # soft/hard mem limits with temporary data.
                 attachments = [(a['datas_fname'], base64.b64decode(a['datas']), a['mimetype'])
+                               
+                               
+                               
                                for a in attachments.sudo().read(['datas_fname', 'datas', 'mimetype'])]
 
                 # specific behavior to customize the send email for notified partners
                 email_list = []
                 if mail.email_to:
+                    
+                    
                     email_list.append(mail._send_prepare_values())
                 for partner in mail.recipient_ids:
+                    
+                    
                     values = mail._send_prepare_values(partner=partner)
                     values['partner_id'] = partner
+                    
                     email_list.append(values)
 
                 # headers
                 headers = {}
                 ICP = self.env['ir.config_parameter'].sudo()
+                
+                
                 bounce_alias = ICP.get_param("mail.bounce.alias")
                 catchall_domain = ICP.get_param("mail.catchall.domain")
                 if bounce_alias and catchall_domain:
