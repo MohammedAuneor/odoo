@@ -3,18 +3,21 @@
 # * account
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Anri Haxhi <anrihaxhi@gmail.com>, 2018
-# artxcenter <artxcenter@gmail.com>, 2018
-# Arion Kosturi <arionkosturi@gmail.com>, 2018
 # Amarildo Golloshi <golloshiamarildo@gmail.com>, 2018
+# Arion Kosturi <arionkosturi@gmail.com>, 2018
+# artxcenter <artxcenter@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Anri Haxhi <anrihaxhi@gmail.com>, 2018
+# Enea Dume <eneadume@gmail.com>, 2018
+# Klodian LULA <klodianlula@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Amarildo Golloshi <golloshiamarildo@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:06+0000\n"
+"PO-Revision-Date: 2017-09-20 10:13+0000\n"
+"Last-Translator: Klodian LULA <klodianlula@gmail.com>, 2018\n"
 "Language-Team: Albanian (https://www.transifex.com/odoo/teams/41243/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,12 +43,12 @@ msgstr "# të Shifrave"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_code_digits
 msgid "# of Digits *"
-msgstr ""
+msgstr "# të Shifrave *"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report_nbr
 msgid "# of Lines"
-msgstr ""
+msgstr "# të Linjave"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line_reconcile_trans_nbr
@@ -60,7 +63,7 @@ msgstr ""
 #. module: account
 #: model:mail.template,subject:account.email_template_edi_invoice
 msgid "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
-msgstr ""
+msgstr "${object.company_id.name} Fatura (Ref ${object.number or 'n/a'})"
 
 #. module: account
 #: model:mail.template,subject:account.mail_template_data_payment_receipt
@@ -122,7 +125,7 @@ msgstr ""
 #: code:addons/account/models/account_bank_statement.py:463
 #, python-format
 msgid "1 transaction was automatically reconciled."
-msgstr "1 transakcion është pajtuar automatikisht."
+msgstr "1 transaksion është pajtuar automatikisht."
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_15days
@@ -153,7 +156,7 @@ msgstr ": Libri Kryesor Llogaritar"
 #: code:addons/account/models/account.py:554
 #, python-format
 msgid ": Refund"
-msgstr ""
+msgstr "Rikompesim"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_trialbalance
@@ -300,6 +303,13 @@ msgid "<span class=\"fa fa-arrow-circle-o-down\"/> Install Now"
 msgstr "<span class=\"fa fa-arrow-circle-o-down\"/> Instalo Tani"
 
 #. module: account
+#: model:ir.ui.view,arch_db:account.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
 msgid "<span class=\"fa\"/> Invite Your Users"
 msgstr "Fto Përdoruesit e tu"
@@ -309,21 +319,21 @@ msgstr "Fto Përdoruesit e tu"
 msgid ""
 "<span class=\"label label-default\"><i class=\"fa fa-fw fa-check\"/><span "
 "class=\"hidden-xs\"> Paid</span></span>"
-msgstr ""
+msgstr "Paguar"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_my_invoices
 msgid ""
 "<span class=\"label label-default\"><i class=\"fa fa-fw fa-remove\"/><span "
 "class=\"hidden-xs\"> Cancelled</span></span>"
-msgstr ""
+msgstr "Anulluar"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_my_invoices
 msgid ""
 "<span class=\"label label-info\"><i class=\"fa fa-fw fa-clock-o\"/><span "
 "class=\"hidden-xs\"> Waiting for Payment</span></span>"
-msgstr ""
+msgstr "Duke pritur për pagesën"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.partner_view_buttons
@@ -472,12 +482,12 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "<span title=\"Balance in Odoo\">Balance in GL</span>"
-msgstr ""
+msgstr "Balanca në GL"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "<span title=\"Latest Statement\">Latest Statement</span>"
-msgstr ""
+msgstr "Deklarata e fundit"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_position_form
@@ -527,7 +537,7 @@ msgstr "<span>Pajtim</span>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "<span>Reporting</span>"
-msgstr ""
+msgstr "Duke raportuar"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -552,7 +562,7 @@ msgstr "<strong>2. Regjistro pagesat e papërputhura</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_invoice_document_with_payments
 msgid "<strong>Amount Due</strong>"
-msgstr ""
+msgstr "Shuma e detyruar"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -616,7 +626,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account.report_journal
 #: model:ir.ui.view,arch_db:account.report_partnerledger
 msgid "<strong>Company:</strong>"
-msgstr ""
+msgstr "Kompania:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -650,7 +660,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_invoice_report
 msgid "<strong>Customer Address</strong>"
-msgstr ""
+msgstr "Adresa e klientit"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_invoice_report
@@ -661,7 +671,7 @@ msgstr "<strong>Kodi i klientit:</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_payment_receipt
 msgid "<strong>Customer: </strong>"
-msgstr ""
+msgstr "Klienti"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_financial
@@ -709,7 +719,7 @@ msgstr "<strong>Për shkak të të dhënave:</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_journal
 msgid "<strong>Entries Sorted By:</strong>"
-msgstr ""
+msgstr "Hyrjet te radhitura nga:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -724,7 +734,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_tax
 msgid "<strong>From</strong>"
-msgstr ""
+msgstr "Nga"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_invoice_report
@@ -787,17 +797,17 @@ msgstr "<strong>Ortakët:</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_payment_receipt
 msgid "<strong>Payment Amount: </strong>"
-msgstr ""
+msgstr "Shuma e pagesës"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_payment_receipt
 msgid "<strong>Payment Date: </strong>"
-msgstr ""
+msgstr "Data e pagesës:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_payment_receipt
 msgid "<strong>Payment Method: </strong>"
-msgstr ""
+msgstr "Metoda e Pagesës:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_agedpartnerbalance
@@ -816,7 +826,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_tax
 msgid "<strong>Purchase</strong>"
-msgstr ""
+msgstr "Blerje"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -909,13 +919,13 @@ msgstr "<strong>Data fillimit:</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_overdue_document
 msgid "<strong>Subtotal :</strong>"
-msgstr ""
+msgstr "Nëntotali :"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.portal_invoice_report
 #: model:ir.ui.view,arch_db:account.report_invoice_document
 msgid "<strong>Subtotal</strong>"
-msgstr "<strong>Subtotali</strong>"
+msgstr ""
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_agedpartnerbalance
@@ -957,7 +967,7 @@ msgstr "<strong>Totali</strong>"
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_account_kanban
 msgid "<strong>Type: </strong>"
-msgstr ""
+msgstr "Tipi:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -970,12 +980,12 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_payment_receipt
 msgid "<strong>Vendor: </strong>"
-msgstr ""
+msgstr "Shitësi:"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.report_tax
 msgid "<strong>to </strong>"
-msgstr ""
+msgstr "tek"
 
 #. module: account
 #: model:ir.actions.act_window,help:account.action_view_bank_statement_tree
@@ -995,25 +1005,25 @@ msgstr ""
 #: code:addons/account/models/account_bank_statement.py:383
 #, python-format
 msgid "A Cash transaction can't have a 0 amount."
-msgstr ""
+msgstr "Një transaksion në të holla nuk mund të ketë një shumë prej 0"
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1699
 #, python-format
 msgid "A Payment Terms should have its last line of type Balance."
-msgstr ""
+msgstr "Termat e pagesës duhet të kenë linjën e fundit të tipit Bilanci."
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1702
 #, python-format
 msgid "A Payment Terms should have only one line of type Balance."
-msgstr ""
+msgstr "Termat e Pagesës duhet të kenë vetëm një linjë të tipit Bilanci."
 
 #. module: account
 #: code:addons/account/models/account.py:722
 #, python-format
 msgid "A bank account can only belong to one journal."
-msgstr ""
+msgstr "Një llogari bankare mund t'i përkasë vetëm një ditari."
 
 #. module: account
 #: model:ir.actions.act_window,help:account.action_bank_statement_tree
@@ -1083,6 +1093,9 @@ msgid ""
 "A rounding per line is advised if your prices are tax-included. That way, "
 "the sum of line subtotals equals the total with taxes."
 msgstr ""
+"Një raund në linjë është këshilluar nëse çmimet tuaja janë të përfshira në "
+"taksë. Në këtë mënyrë, shuma e nëntotalit linjë është e barabartë me totalin"
+" me taksat."
 
 #. module: account
 #: code:addons/account/models/account_bank_statement.py:881
@@ -1096,6 +1109,7 @@ msgstr "Një linjë lëvizëse e përzgjedhur është tashmë e kordinuar."
 #, python-format
 msgid "A selected statement line was already reconciled with an account move."
 msgstr ""
+"Një linjë deklarimi e zgjedhur ishte pajtuar tashmë me një lëvizje llogarie."
 
 #. module: account
 #: sql_constraint:account.fiscal.position.tax:0
@@ -1114,7 +1128,7 @@ msgstr ""
 #. module: account
 #: model:res.groups,name:account.group_warning_account
 msgid "A warning can be set on a partner (Account)"
-msgstr ""
+msgstr "Një paralajmërim mund të vendoset në një partner (llogari)"
 
 #. module: account
 #. openerp-web
@@ -1146,7 +1160,7 @@ msgstr "Llogaria"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_module_account_accountant
 msgid "Account Accountant"
-msgstr ""
+msgstr "Kontabilisti i llogarisë"
 
 #. module: account
 #: model:ir.model,name:account.model_account_aged_trial_balance
@@ -1475,7 +1489,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.menu,name:account.account_account_menu
 msgid "Accounting"
-msgstr ""
+msgstr "Kontabiliteti"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_journal_form
@@ -3680,10 +3694,18 @@ msgid "Currency as per company's country."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1609
-#: code:addons/account/models/account_move.py:1621
+#: code:addons/account/models/account_move.py:1663
+#: code:addons/account/models/account_move.py:1675
 #, python-format
 msgid "Currency exchange rate difference"
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account.py:451
+#, python-format
+msgid ""
+"Currency field should only be set if the journal's currency is different "
+"from the company's. Leave the field blank to use company currency."
 msgstr ""
 
 #. module: account
@@ -5655,7 +5677,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
 #: model:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "Invoicing"
-msgstr ""
+msgstr "Faturime"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line_is_unaffected_earnings_line
@@ -8335,7 +8357,7 @@ msgstr "Përgjegjës"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_module_account_deferred_revenue
 msgid "Revenue Recognition"
-msgstr ""
+msgstr "Njohje e të Ardhurave"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal_date
@@ -10372,6 +10394,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_account_user_type_id
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_journal_type
 #: model:ir.model.fields,field_description:account.field_account_financial_report_type
+#: model:ir.model.fields,field_description:account.field_account_invoice_line_invoice_type
 #: model:ir.model.fields,field_description:account.field_account_invoice_report_type
 #: model:ir.model.fields,field_description:account.field_account_invoice_type
 #: model:ir.model.fields,field_description:account.field_account_journal_type
@@ -11121,7 +11144,7 @@ msgid "You cannot put/take money in/out for a bank statement which is closed."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account.py:253
+#: code:addons/account/models/account.py:261
 #, python-format
 msgid ""
 "You cannot remove/deactivate an account which is set on a customer or "
@@ -11129,13 +11152,21 @@ msgid ""
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1330
+#: code:addons/account/models/account.py:249
+#, python-format
+msgid ""
+"You cannot set a currency on this account as it already has some journal "
+"entries having a different foreign currency."
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account_move.py:1368
 #, python-format
 msgid "You cannot use deprecated account."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1250
+#: code:addons/account/models/account_move.py:1283
 #, python-format
 msgid ""
 "You cannot use this general account in this journal, check the tab 'Entry "
@@ -11144,7 +11175,7 @@ msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:74
-#: code:addons/account/models/account_invoice.py:777
+#: code:addons/account/models/account_invoice.py:780
 #, python-format
 msgid ""
 "You cannot validate an invoice with a negative total amount. You should "

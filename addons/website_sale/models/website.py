@@ -166,7 +166,7 @@ class Website(models.Model):
             'partner_id': partner.id,
             'pricelist_id': pricelist.id,
             'payment_term_id': self.sale_get_payment_term(partner),
-            'team_id': self.salesteam_id.id,
+            'team_id': self.salesteam_id.id or partner.parent_id.team_id.id or partner.team_id.id,
             'partner_invoice_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
             'user_id': salesperson_id or self.salesperson_id.id or default_user_id,
@@ -214,7 +214,7 @@ class Website(models.Model):
             # TODO cache partner_id session
             pricelist = self.env['product.pricelist'].browse(pricelist_id).sudo()
             so_data = self._prepare_sale_order_values(partner, pricelist)
-            sale_order = self.env['sale.order'].sudo().create(so_data)
+            sale_order = self.env['sale.order'].with_context(force_company=request.website.company_id.id).sudo().create(so_data)
 
             # set fiscal position
             if request.website.partner_id.id != partner.id:
@@ -223,7 +223,7 @@ class Website(models.Model):
                 country_code = request.session['geoip'].get('country_code')
                 if country_code:
                     country_id = request.env['res.country'].search([('code', '=', country_code)], limit=1).id
-                    fp_id = request.env['account.fiscal.position'].sudo()._get_fpos_by_region(country_id)
+                    fp_id = request.env['account.fiscal.position'].sudo().with_context(force_company=request.website.company_id.id)._get_fpos_by_region(country_id)
                     sale_order.fiscal_position_id = fp_id
                 else:
                     # if no geolocation, use the public user fp

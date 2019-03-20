@@ -313,6 +313,8 @@ class IrAttachment(models.Model):
     def _check_serving_attachments(self):
         # restrict writing on attachments that could be served by the
         # ir.http's dispatch exception handling
+        if self.env.user._is_superuser():
+            return
         if self.type == 'binary' and self.url:
             has_group = self.env.user.has_group
             if not any([has_group(g) for g in self.get_serving_groups()]):
@@ -347,6 +349,11 @@ class IrAttachment(models.Model):
             # was not)
             if res_model not in self.env:
                 require_employee = True
+                continue
+            elif res_model == 'res.users' and len(res_ids) == 1 and self._uid == list(res_ids)[0]:
+                # by default a user cannot write on itself, despite the list of writeable fields
+                # e.g. in the case of a user inserting an image into his image signature
+                # we need to bypass this check which would needlessly throw us away
                 continue
             records = self.env[res_model].browse(res_ids).exists()
             if len(records) < len(res_ids):

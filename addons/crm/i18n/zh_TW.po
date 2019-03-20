@@ -3,17 +3,18 @@
 # * crm
 # 
 # Translators:
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2017
-# Martin Trigaux, 2017
 # Michael Yeung, 2017
+# Martin Trigaux, 2018
 # Bill Hsu <hcm86@icloud.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-20 11:58+0000\n"
-"PO-Revision-Date: 2018-04-20 11:58+0000\n"
-"Last-Translator: Bill Hsu <hcm86@icloud.com>, 2018\n"
+"PO-Revision-Date: 2017-09-20 10:16+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1930,7 +1931,7 @@ msgstr "活動"
 msgid ""
 "Every salesperson can analyze their own pipe by clicking on the 'switch view"
 " to graph' icon."
-msgstr "通過點選『轉換視圖為圖表』的圖標，每個銷售員都可以分析其商機漏斗。"
+msgstr "通過點選『轉換視圖為圖表』的圖示，每個銷售員都可以分析其商機漏斗。"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
@@ -2150,7 +2151,7 @@ msgstr "得到丟失原因"
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_crm_lead_email_cc
 msgid "Global CC"
-msgstr "全球抄送"
+msgstr "整體抄送"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:379
@@ -2609,7 +2610,7 @@ msgstr "許可證"
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_base_partner_merge_automatic_wizard_line_ids
 msgid "Lines"
-msgstr "明細行"
+msgstr "明細"
 
 #. module: crm
 #: selection:crm.lead.convert2task,action:0
@@ -2810,7 +2811,7 @@ msgstr "將每一個業務夥伴已存在的線索／商機合併"
 #: selection:crm.lead2opportunity.partner,name:0
 #: selection:crm.lead2opportunity.partner.mass,name:0
 msgid "Merge with existing opportunities"
-msgstr "與已存在的商機合併"
+msgstr "與其他線索合併"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:528
@@ -3104,7 +3105,7 @@ msgstr "打開商機"
 #: model:ir.ui.view,arch_db:crm.view_crm_lead2opportunity_partner
 #: model:ir.ui.view,arch_db:crm.view_partners_form_crm1
 msgid "Opportunities"
-msgstr "商機"
+msgstr "商機/線索"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
@@ -3786,7 +3787,7 @@ msgstr "顯示線索選單"
 msgid ""
 "Show advanced filters and options by clicking on the magnifying glass icon "
 "next to the search bar."
-msgstr "通過點選搜尋欄旁邊的放大鏡圖標顯示高級篩選和選項。"
+msgstr "通過點選搜尋欄旁邊的放大鏡圖示顯示高級篩選和選項。"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
