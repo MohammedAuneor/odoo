@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-07 14:41+0000\n"
-"PO-Revision-Date: 2018-06-28 14:30+0000\n"
+"PO-Revision-Date: 2019-02-28 20:41+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/odoo/odoo-9/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +83,7 @@ msgstr "Raggruppa per"
 #. module: rating
 #: model:ir.ui.view,arch_db:rating.view_rating_rating_search
 msgid "Happy"
-msgstr ""
+msgstr "Contento"
 
 #. module: rating
 #. openerp-web
@@ -97,7 +97,7 @@ msgstr "Non mi piace"
 #: code:addons/rating/static/src/js/rating_common.js:25
 #, python-format
 msgid "I hate it"
-msgstr ""
+msgstr "Lo odio"
 
 #. module: rating
 #. openerp-web
@@ -134,7 +134,7 @@ msgstr ""
 #: code:addons/rating/static/src/js/rating_common.js:27
 #, python-format
 msgid "It's okay"
-msgstr ""
+msgstr "Va bene"
 
 #. module: rating
 #: model:ir.model.fields,field_description:rating.field_rating_mixin___last_update
@@ -210,7 +210,7 @@ msgstr ""
 #. module: rating
 #: model:ir.model.fields,help:rating.field_rating_rating_rating
 msgid "Rating value"
-msgstr ""
+msgstr "Valutazione"
 
 #. module: rating
 #: model:ir.ui.view,arch_db:rating.view_rating_rating_search
