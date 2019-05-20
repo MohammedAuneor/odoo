@@ -146,7 +146,7 @@ class AccountMove(models.Model):
                             if not journal.refund_sequence_id:
                                 raise UserError(_('Please define a sequence for the refunds'))
                             sequence = journal.refund_sequence_id
-                                                            
+
                         new_name = sequence.with_context(ir_sequence_date=move.date).next_by_id()
                     else:
                         raise UserError(_('Please define a sequence on the journal.'))
@@ -322,7 +322,7 @@ class AccountMoveLine(models.Model):
                         else:
                             date = partial_line.credit_move_id.date if partial_line.debit_move_id == line else partial_line.debit_move_id.date
                             rate = line.currency_id.with_context(date=date).rate
-                        amount_residual_currency += sign_partial_line * line.currency_id.round(partial_line.amount * rate)
+                        amount_residual_currency += sign_partial_line * partial_line.amount * rate
 
             #computing the `reconciled` field. As we book exchange rate difference on each partial matching,
             #we can only check the amount in company currency
@@ -1200,6 +1200,8 @@ class AccountMoveLine(models.Model):
                         ctx = {}
                         if 'date' in vals:
                             ctx['date'] = vals['date']
+                        elif 'date_maturity' in vals:
+                            ctx['date'] = vals['date_maturity']
                         temp['currency_id'] = bank.currency_id.id
                         temp['amount_currency'] = bank.company_id.currency_id.with_context(ctx).compute(tax_vals['amount'], bank.currency_id, round=True)
                     tax_lines_vals.append(temp)
