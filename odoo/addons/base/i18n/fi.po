@@ -7,11 +7,11 @@
 # Kari Lindgren <karisatu@gmail.com>, 2016
 # Mikko Salmela <salmemik@gmail.com>, 2016
 # Timo Koukkari <ti.ko@netikka.fi>, 2016
-# Miku Laitinen <miku.laitinen@gmail.com>, 2016
 # Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2016
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2017
 # artol <arto.leskinen@tek.fi>, 2017
 # Tommi Rintala <tommi.rintala@gmail.com>, 2017
+# Miku Laitinen <miku.laitinen@gmail.com>, 2017
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2017
 # Melina Mäntylä <melina.mantyla@web-veistamo.fi>, 2017
 # Martin Trigaux, 2017
@@ -20,6 +20,7 @@
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2018
 # Teemu Ahonen <teemu.ahonen@web-veistamo.fi>, 2018
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2019
+# Simo Suurla <simo@suurla.fi>, 2019
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2019
 # 
 msgid ""
@@ -13030,7 +13031,7 @@ msgstr "SMTP palvelin puuttuu"
 #: code:addons/models.py:3282
 #, python-format
 msgid "Missing document(s)"
-msgstr ""
+msgstr "Puuttuvat dokumentit"
 
 #. module: base
 #: code:addons/models.py:5655
@@ -14667,7 +14668,7 @@ msgstr "Prioriteetti"
 #. module: base
 #: selection:res.partner,type:0
 msgid "Private Address"
-msgstr ""
+msgstr "Kotiosoite"
 
 #. module: base
 #: model:ir.ui.view,arch_db:base.res_partner_view_form_private
