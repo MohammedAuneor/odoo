@@ -1079,6 +1079,7 @@ class BaseModel(object):
                 except ValidationError, e:
                     raise
                 except Exception, e:
+                    _logger.exception('Exception while validating constraint')
                     raise ValidationError("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
 
     @api.model
@@ -2487,7 +2488,11 @@ class BaseModel(object):
                             cr.execute("SELECT indexname FROM pg_indexes WHERE indexname = %s and tablename = %s", (indexname, self._table))
                             res2 = cr.dictfetchall()
                             if not res2 and field.index:
-                                cr.execute('CREATE INDEX "%s_%s_index" ON "%s" ("%s")' % (self._table, name, self._table, name))
+                                try:  # DO NOT FORWARD-PORT TO SAAS-15 AND UP (stop at saas-14)
+                                    with cr.savepoint():
+                                        cr.execute('CREATE INDEX "%s_%s_index" ON "%s" ("%s")' % (self._table, name, self._table, name))
+                                except psycopg2.OperationalError as e:
+                                    _schema.error('Unable to add index for %s (%s):\n %s', self._table, name, e.message)
                                 cr.commit()
                                 if field.type == 'text':
                                     # FIXME: for fields.text columns we should try creating GIN indexes instead (seems most suitable for an ERP context)
