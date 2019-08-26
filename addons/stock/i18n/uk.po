@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"%s --> Товар UoM є %s (%s) - Переміщення UoM є %s (%s)"
+"%s --> Одиниця вимірювання товару %s (%s) - Одиниця вимірювання переміщення %s (%s)"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:231
@@ -1063,7 +1063,7 @@ msgstr "Дозамовлення"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location_barcode
 msgid "Barcode"
-msgstr "Штрихкод"
+msgstr "Штрих-код"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_stock_config_settings
@@ -3504,7 +3504,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock.field_stock_location_parent_left
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package_parent_left
 msgid "Left Parent"
-msgstr "Залишений батько "
+msgstr "Лівий батьківський елемент"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_location_company_id
@@ -5654,7 +5654,7 @@ msgstr "Розташування для поверення"
 #. module: stock
 #: model:ir.model,name:stock.model_stock_return_picking
 msgid "Return Picking"
-msgstr "Повернути відбір"
+msgstr "Повернути комплектування"
 
 #. module: stock
 #: code:addons/stock/wizard/stock_picking_return.py:161
@@ -5671,7 +5671,7 @@ msgstr "Зворотнє переміщення"
 #: model:ir.model.fields,field_description:stock.field_stock_location_parent_right
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package_parent_right
 msgid "Right Parent"
-msgstr "Правий батько"
+msgstr "Правий батьківський елемент"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_procurement_rule_route_id
@@ -6217,7 +6217,7 @@ msgstr "Операції з запасами"
 #: model:ir.model.fields,field_description:stock.field_res_users_picking_warn
 #: model:ir.model.fields,field_description:stock.field_stock_pack_operation_picking_id
 msgid "Stock Picking"
-msgstr "Відбір запасів"
+msgstr "Складське комплектування"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_product_stock_move_ids
@@ -8066,7 +8066,7 @@ msgstr "список продавців"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_form
 msgid "to"
-msgstr "по"
+msgstr "до"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner

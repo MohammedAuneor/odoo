@@ -46,7 +46,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.report_lunch_order
 msgid "<strong>Total</strong>"
-msgstr ""
+msgstr "<strong>សរុប</strong>"
 
 #. module: lunch
 #: model:ir.actions.act_window,help:lunch.lunch_cashmove_action_control_accounts
@@ -85,7 +85,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lunch.field_lunch_order_alerts
 #: model:ir.ui.menu,name:lunch.lunch_alert_menu
 msgid "Alerts"
-msgstr ""
+msgstr "ការជូនដំណឹង"
 
 #. module: lunch
 #: model:ir.actions.act_window,help:lunch.lunch_alert_action
@@ -128,7 +128,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search_2
 msgid "By Employee"
-msgstr ""
+msgstr "ដោយបុគ្គលិក"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_order_line_view_search
@@ -275,7 +275,7 @@ msgstr "កាលបរិច្ឆេត"
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_specific_day
 msgid "Day"
-msgstr ""
+msgstr "ថ្ងៃ"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_cashmove_description
@@ -287,7 +287,7 @@ msgstr "ពិស្តារ"
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_display
 msgid "Display"
-msgstr ""
+msgstr "បង្ហាញ"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_display_name
@@ -344,7 +344,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_friday
 msgid "Friday"
-msgstr ""
+msgstr "ថ្ងៃសុក្រ"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search_2
@@ -484,7 +484,7 @@ msgstr ""
 #: model:ir.ui.menu,name:lunch.menu_lunch_admin
 #: model:res.groups,name:lunch.group_lunch_manager
 msgid "Manager"
-msgstr ""
+msgstr "អ្នកគ្រប់គ្រង"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_order_line_lucky_max_budget
@@ -495,12 +495,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_message
 #: model:ir.ui.view,arch_db:lunch.lunch_alert_view_form
 msgid "Message"
-msgstr ""
+msgstr "សារ"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_monday
 msgid "Monday"
-msgstr ""
+msgstr "ថ្ងៃចន័័្ទ"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search
@@ -616,7 +616,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search
 #: selection:lunch.cashmove,state:0
 msgid "Payment"
-msgstr ""
+msgstr "ការចំណាយ"
 
 #. module: lunch
 #: model:ir.ui.menu,name:lunch.lunch_order_menu_tree
@@ -633,7 +633,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lunch.field_lunch_product_price
 #: model:ir.ui.view,arch_db:lunch.lunch_order_line_view_tree
 msgid "Price"
-msgstr ""
+msgstr "តម្លៃ"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_order_line_lucky_product_id
@@ -652,7 +652,7 @@ msgstr "ប្រភេទផលិតផល"
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_order_line_category_id
 msgid "Product Category"
-msgstr ""
+msgstr "ប្រភេទ​ផលិតផល"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_product_category_view_form
@@ -674,7 +674,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lunch.field_lunch_order_order_line_ids
 #: model:ir.ui.menu,name:lunch.lunch_product_menu
 msgid "Products"
-msgstr ""
+msgstr "ផលិតផល"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_product_category_view_form
@@ -716,7 +716,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_saturday
 msgid "Saturday"
-msgstr ""
+msgstr "ថ្ងៃសៅរ៌"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_alert_view_form
@@ -770,7 +770,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_sunday
 msgid "Sunday"
-msgstr ""
+msgstr "ថ្ងៃអាទិត្យ"
 
 #. module: lunch
 #: model:ir.model.fields,help:lunch.field_lunch_order_company_id
@@ -800,12 +800,12 @@ msgstr ""
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_thursday
 msgid "Thursday"
-msgstr ""
+msgstr "ថ្ងៃប្រហស្បត៌"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_order_line_view_search
 msgid "Today"
-msgstr ""
+msgstr "ថ្ងៃនេះ"
 
 #. module: lunch
 #: model:ir.ui.menu,name:lunch.lunch_order_line_menu_by_supplier
@@ -824,12 +824,12 @@ msgstr "សរុប"
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_tuesday
 msgid "Tuesday"
-msgstr ""
+msgstr "ថ្ងៃពុធ"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.report_lunch_order
 msgid "Unit Price"
-msgstr ""
+msgstr "កត្តាតំលៃ"
 
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_cashmove_user_id
@@ -845,7 +845,7 @@ msgstr "អ្នកប្រើប្រាស់"
 #: model:ir.model.fields,field_description:lunch.field_lunch_product_supplier
 #: model:ir.ui.view,arch_db:lunch.lunch_product_view_search
 msgid "Vendor"
-msgstr ""
+msgstr "អ្នកទិញ"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_order_line_view_search

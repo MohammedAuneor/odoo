@@ -9,9 +9,9 @@
 # Ondřej Janovský <ondrej.janovsky@alarex.cz>, 2016
 # Ladislav Tomm <tomm@helemik.cz>, 2017
 # Jakub Lohnisky <jakub@lepremier.cz>, 2017
-# Martin Trigaux, 2017
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
 # Michal Veselý <michal@veselyberanek.net>, 2018
+# Martin Trigaux, 2019
 # trendspotter <j.podhorecky@volny.cz>, 2019
 # 
 msgid ""
@@ -1556,6 +1556,9 @@ msgid ""
 "Configure the price accuracy you need for different kinds of usage: accounting, sales, purchases.\n"
 "=================================================================================================\n"
 msgstr ""
+"\n"
+"Konfiguruje přesnost ceny, kterou potřebujete pro různé použití: účetnictví, prodej, nákupy.\n"
+"================================================================================\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_survey
@@ -2850,6 +2853,11 @@ msgid ""
 "This module provides the core of the Odoo Web Client.\n"
 "        "
 msgstr ""
+"\n"
+"Webový modul Odoo Web.\n"
+"================\n"
+"\n"
+"Tento modul poskytuje jádro webového klienta Odoo."
 
 #. module: base
 #: model:ir.module.module,description:base.module_web_kanban
@@ -4482,6 +4490,12 @@ msgid ""
 "with a single statement.\n"
 "    "
 msgstr ""
+"\n"
+"Tento modul instaluje základ pro bankovní účty IBAN (International Bank Account Number) a kontroluje jejich platnost.\n"
+"===============================================================================\n"
+"\n"
+"Schopný extrahovat správně reprezentované lokální účty z účtů IBAN\n"
+"s jedním prohlášením."
 
 #. module: base
 #: model:ir.module.module,description:base.module_association
@@ -4955,6 +4969,14 @@ msgid ""
 msgstr ""
 
 #. module: base
+#: code:addons/model.py:153
+#, python-format
+msgid ""
+" another model requires the record being deleted. If possible, archive it "
+"instead."
+msgstr ""
+
+#. module: base
 #: model:ir.ui.view,arch_db:base.res_lang_form
 msgid "%A - Full weekday name."
 msgstr "%A - Plný název dne v týdnu."
@@ -5108,6 +5130,14 @@ msgid ""
 msgstr ""
 "- Akce: akce připojená k jednomu slotu zadného modelu\n"
 "- Výchozí: výchozí hodnota pole modelu"
+
+#. module: base
+#: code:addons/model.py:141
+#, python-format
+msgid ""
+"- Create/update: a mandatory field is not set.\n"
+"- Delete: another model requires the record being deleted. If possible, archive it instead."
+msgstr ""
 
 #. module: base
 #: model:ir.ui.view,arch_db:base.report_irmodeloverview
@@ -5343,6 +5373,8 @@ msgid ""
 "<strong>This operation will permanently erase all data currently stored by "
 "the modules!</strong>"
 msgstr ""
+"<strong>Tato operace trvale vymaže všechna data aktuálně uložená "
+"moduly!</strong>"
 
 #. module: base
 #: model:ir.ui.view,arch_db:base.report_irmodeloverview
@@ -7757,6 +7789,12 @@ msgid "Constraint Type"
 msgstr "Druh omezení"
 
 #. module: base
+#: code:addons/model.py:158
+#, python-format
+msgid "Constraint:"
+msgstr ""
+
+#. module: base
 #: sql_constraint:ir.model.constraint:0
 msgid "Constraints with the same name are unique per module."
 msgstr "Omezení stejného názvu jsou unikátní pro každý modul."
@@ -8670,6 +8708,11 @@ msgstr ""
 #: model:ir.module.category,name:base.module_category_hidden_dependency
 msgid "Dependency"
 msgstr "Závislost"
+
+#. module: base
+#: model:ir.module.module,description:base.module_test_pylint
+msgid "Deprecated empty module in favor of test-lint."
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_attachment_description
@@ -9635,6 +9678,12 @@ msgstr "Názvy polí mohou obsahovat pouze znaky, číslice a podtržítka (až 
 #, python-format
 msgid "Field names must be unique per model."
 msgstr "Názvy polí musí být jedinečné pro každý model."
+
+#. module: base
+#: code:addons/model.py:148
+#, python-format
+msgid "Field:"
+msgstr "Pole:"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_model_fields
@@ -10957,6 +11006,9 @@ msgid ""
 "* if False, the view currently does not extend its parent but can be enabled\n"
 "         "
 msgstr ""
+"Pokud je toto zobrazení zděděno,\n"
+"* pokud je True, zobrazení vždy rozšiřuje své nadřazené pohledy\n"
+"* pokud je False, zobrazení aktuálně nerozšiřuje jeho nadřazené pohledy, ale může být povoleno"
 
 #. module: base
 #: model:ir.actions.act_window,help:base.action_country_state
@@ -12879,6 +12931,12 @@ msgstr "Model, ke kterému se položka vztahuje"
 msgid ""
 "Model to which this entry applies - helper field for setting a model, will "
 "automatically set the correct model name"
+msgstr ""
+
+#. module: base
+#: code:addons/model.py:147 code:addons/model.py:157
+#, python-format
+msgid "Model:"
 msgstr ""
 
 #. module: base
@@ -16699,7 +16757,7 @@ msgstr "Cílová aktivita."
 #: code:addons/base/ir/ir_model.py:438
 #, python-format
 msgid "The field '%s' cannot be removed because the field '%s' depends on it."
-msgstr ""
+msgstr "Pole '%s' nelze odstranit, protože pole '%s' na něm závisí."
 
 #. module: base
 #: model:ir.ui.view,arch_db:base.view_model_form
@@ -16963,6 +17021,14 @@ msgstr ""
 #: model:ir.ui.view,arch_db:base.view_base_module_upgrade_install
 msgid "The selected modules have been updated / installed !"
 msgstr "Vybrané moduly byly aktualizovány / instalovány !"
+
+#. module: base
+#: code:addons/base/module/module.py:489
+#, python-format
+msgid ""
+"The server is busy right now, module operations are not possible at this "
+"time, please try again later."
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_country_state_code
@@ -17669,7 +17735,9 @@ msgid "United States Postal Service (USPS) Shipping"
 msgstr "Poštovní služba Spojených států amerických (USPS)"
 
 #. module: base
+#: code:addons/model.py:148 code:addons/model.py:157 code:addons/model.py:158
 #: selection:ir.module.module.dependency,state:0
+#, python-format
 msgid "Unknown"
 msgstr "Neznámé"
 
@@ -17695,7 +17763,7 @@ msgstr "Neznámé pole% r v závislosti% r"
 #: code:addons/base/ir/ir_model.py:321
 #, python-format
 msgid "Unknown field name '%s' in related field '%s'"
-msgstr ""
+msgstr "Neznámý název pole  '%s'  v souvisejícím poli  '%s' "
 
 #. module: base
 #: code:addons/report_sxw.py:370
@@ -18291,7 +18359,7 @@ msgstr "Webový Editor"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_enterprise
 msgid "Web Enterprise"
-msgstr ""
+msgstr "Firemní webová strana"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_gantt
@@ -19555,6 +19623,11 @@ msgstr "test-inherits"
 #: model:ir.module.module,shortdesc:base.module_test_limits
 msgid "test-limits"
 msgstr "test-limits"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_test_lint
+msgid "test-lint"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_test_uninstall
