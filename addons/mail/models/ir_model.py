@@ -16,9 +16,34 @@ class IrModel(models.Model):
     )
 
     def unlink(self):
-        # Delete followers for models that will be unlinked.
+        # Delete followers, messages and attachments for models that will be unlinked.
+        models = tuple(self.mapped('model'))
+
         query = "DELETE FROM mail_followers WHERE res_model IN %s"
-        self.env.cr.execute(query, [tuple(self.mapped('model'))])
+        self.env.cr.execute(query, [models])
+
+        query = "DELETE FROM mail_message WHERE model in %s"
+        self.env.cr.execute(query, [models])
+
+        # Get files attached solely by the models
+        query = """
+            SELECT DISTINCT store_fname
+            FROM ir_attachment
+            WHERE res_model IN %s
+            EXCEPT
+            SELECT store_fname
+            FROM ir_attachment
+            WHERE res_model not IN %s;
+        """
+        self.env.cr.execute(query, [models, models])
+        fnames = self.env.cr.fetchall()
+
+        query = """DELETE FROM ir_attachment WHERE res_model in %s"""
+        self.env.cr.execute(query, [models])
+
+        for (fname,) in fnames:
+            self.env['ir.attachment']._file_delete(fname)
+
         return super(IrModel, self).unlink()
 
     @api.multi
@@ -52,12 +77,6 @@ class IrModel(models.Model):
             model_class._inherit = parents + ['mail.thread']
         return model_class
 
-    def unlink(self):
-        # Delete followers for models that will be unlinked.
-        query = "DELETE FROM mail_followers WHERE res_model IN %s"
-        self.env.cr.execute(query, [tuple(self.mapped('model'))])
-        return super(IrModel, self).unlink()
-
 
 class IrModelField(models.Model):
     _inherit = 'ir.model.fields'
@@ -74,6 +93,6 @@ class IrModelField(models.Model):
 
     def _instanciate_attrs(self, field_data):
         attrs = super(IrModelField, self)._instanciate_attrs(field_data)
-        if field_data.get('track_visibility'):
+        if attrs and field_data.get('track_visibility'):
             attrs['track_visibility'] = field_data['track_visibility']
         return attrs

@@ -6,7 +6,6 @@ var Context = require('web.Context');
 var core = require('web.core');
 var fieldUtils = require('web.field_utils');
 var session = require('web.session');
-var time = require('web.time');
 
 var _t = core._t;
 
@@ -21,6 +20,9 @@ function dateToServer (date) {
 }
 
 return AbstractModel.extend({
+    /**
+     * @override
+     */
     init: function () {
         this._super.apply(this, arguments);
         this.end_date = null;
@@ -58,10 +60,11 @@ return AbstractModel.extend({
             end.add(-1, 'days');
         }
 
+        var isDateEvent = this.fields[this.mapping.date_start].type === 'date';
         // An "allDay" event without the "all_day" option is not considered
         // as a 24h day. It's just a part of the day (by default: 7h-19h).
         if (event.allDay) {
-            if (!this.mapping.all_day) {
+            if (!this.mapping.all_day && !isDateEvent) {
                 if (event.r_start) {
                     start.hours(event.r_start.hours())
                          .minutes(event.r_start.minutes())
@@ -73,9 +76,11 @@ return AbstractModel.extend({
                        .utc();
                 } else {
                     // default hours in the user's timezone
-                    start.hours(7).add(-this.getSession().getTZOffset(start), 'minutes');
-                    end.hours(19).add(-this.getSession().getTZOffset(end), 'minutes');
+                    start.hours(7);
+                    end.hours(19);
                 }
+                start.add(-this.getSession().getTZOffset(start), 'minutes');
+                end.add(-this.getSession().getTZOffset(end), 'minutes');
             }
         } else {
             start.add(-this.getSession().getTZOffset(start), 'minutes');
@@ -100,7 +105,9 @@ return AbstractModel.extend({
         }
 
         if (this.mapping.date_delay) {
-            data[this.mapping.date_delay] = (end.diff(start) <= 0 ? end.endOf('day').diff(start) : end.diff(start)) / 1000 / 3600;
+            if (this.data.scale !== 'month' || (this.data.scale === 'month' && !event.drop)) {
+                data[this.mapping.date_delay] = (end.diff(start) <= 0 ? end.endOf('day').diff(start) : end.diff(start)) / 1000 / 3600;
+            }
         }
 
         return data;
@@ -216,9 +223,9 @@ return AbstractModel.extend({
             filters: params.filters,
         };
 
+        this.setDate(params.initialDate);
         // Use mode attribute in xml file to specify zoom timeline (day,week,month)
         // by default month.
-        this.setDate(params.initialDate, true);
         this.setScale(params.mode);
 
         _.each(this.data.filters, function (filter) {
@@ -229,33 +236,41 @@ return AbstractModel.extend({
 
         return this.preload_def.then(this._loadCalendar.bind(this));
     },
+    /**
+     * Move the current date range to the next period
+     */
     next: function () {
         this.setDate(this.data.target_date.clone().add(1, this.data.scale));
     },
+    /**
+     * Move the current date range to the previous period
+     */
     prev: function () {
         this.setDate(this.data.target_date.clone().add(-1, this.data.scale));
     },
     /**
-     * @todo: this should not work. it ignores the domain/context
-     *
      * @override
-     * @param {any} _handle ignored
-     * @param {any} _params ignored ? really ?
+     * @param {Object} [params.context]
+     * @param {Array} [params.domain]
      * @returns {Deferred}
      */
-    reload: function (_handle, params) {
+    reload: function (handle, params) {
         if (params.domain) {
             this.data.domain = params.domain;
+        }
+        if (params.context) {
+            this.data.context = params.context;
         }
         return this._loadCalendar();
     },
     /**
      * @param {Moment} start
-     * @param {boolean} highlight
      */
-    setDate: function (start, highlight) {
-        this.data.start_date = this.data.end_date = this.data.target_date = this.data.highlight_date = start;
-        this.data.start_date.utc().add(this.getSession().getTZOffset(this.data.start_date), 'minutes');
+    setDate: function (start) {
+        // keep highlight/target_date in localtime
+        this.data.highlight_date = this.data.target_date = start.clone();
+        // set dates in UTC with timezone applied manually
+        this.data.start_date = this.data.end_date = start;
 
         switch (this.data.scale) {
             case 'month':
@@ -270,10 +285,13 @@ return AbstractModel.extend({
                 this.data.start_date = this.data.start_date.clone().startOf('day');
                 this.data.end_date = this.data.end_date.clone().endOf('day');
         }
-        if (highlight) {
-            this.data.highlight_date = this.data.target_date;
-        }
+
+        this.data.start_date.utc();
+        this.data.end_date.utc();
     },
+    /**
+     * @param {string} scale the scale to set
+     */
     setScale: function (scale) {
         if (!_.contains(scales, scale)) {
             scale = "week";
@@ -281,11 +299,17 @@ return AbstractModel.extend({
         this.data.scale = scale;
         this.setDate(this.data.target_date);
     },
+    /**
+     * Move the current date range to the period containing today
+     */
     today: function () {
         this.setDate(moment(new Date()));
     },
+    /**
+     * Toggle the sidebar (containing the mini calendar)
+     */
     toggleFullWidth: function () {
-        var fullWidth = this.call('local_storage', 'getItem', 'calendar_fullWidth') !== 'true';
+        var fullWidth = this.call('local_storage', 'getItem', 'calendar_fullWidth') !== true;
         this.call('local_storage', 'setItem', 'calendar_fullWidth', fullWidth);
     },
     /**
@@ -356,15 +380,21 @@ return AbstractModel.extend({
             domain.push([field, 'in', authorizedValues[field]]);
         }
         for (var field in avoidValues) {
-            domain.push([field, 'not in', avoidValues[field]]);
+            if (avoidValues[field].length > 0) {
+                domain.push([field, 'not in', avoidValues[field]]);
+            }
         }
 
         return domain;
     },
     /**
+     * @private
      * @returns {Object}
      */
     _getFullCalendarOptions: function () {
+        var week_start = _t.database.parameters.week_start || 0;
+        // calendar uses index 0 for Sunday but Odoo stores it as 7
+        week_start = week_start % 7;
         return {
             defaultView: (this.mode === "month")? "month" : ((this.mode === "week")? "agendaWeek" : ((this.mode === "day")? "agendaDay" : "agendaWeek")),
             header: false,
@@ -380,17 +410,12 @@ return AbstractModel.extend({
             weekNumbers: true,
             weekNumberTitle: _t("W"),
             allDayText: _t("All day"),
-            views: {
-                week: {
-                    columnFormat: 'ddd ' + time.getLangDateFormat(),
-                    titleFormat: time.getLangTimeFormat(),
-                }
-            },
             monthNames: moment.months(),
             monthNamesShort: moment.monthsShort(),
             dayNames: moment.weekdays(),
             dayNamesShort: moment.weekdaysShort(),
-            firstDay: moment().startOf('week').isoWeekday(),
+            firstDay: week_start,
+            slotLabelFormat: _t.database.parameters.time_format.search("%H") != -1 ? 'H:mm': 'h(:mm)a',
         };
     },
     /**
@@ -411,11 +436,12 @@ return AbstractModel.extend({
         return domain;
     },
     /**
+     * @private
      * @returns {Deferred}
      */
     _loadCalendar: function () {
         var self = this;
-        this.data.fullWidth = this.call('local_storage', 'getItem', 'calendar_fullWidth') === 'true';
+        this.data.fullWidth = this.call('local_storage', 'getItem', 'calendar_fullWidth') === true;
         this.data.fc_options = this._getFullCalendarOptions();
 
         var defs = _.map(this.data.filters, this._loadFilter.bind(this));
@@ -439,6 +465,7 @@ return AbstractModel.extend({
         });
     },
     /**
+     * @private
      * @param {any} element
      * @param {any} events
      * @returns {Deferred}
@@ -455,6 +482,7 @@ return AbstractModel.extend({
         return $.Deferred().resolve();
     },
     /**
+     * @private
      * @param {any} filter
      * @returns {Deferred}
      */
@@ -516,6 +544,7 @@ return AbstractModel.extend({
             });
     },
     /**
+     * @private
      * @param {any} element
      * @param {any} events
      * @returns {Deferred}
@@ -543,6 +572,7 @@ return AbstractModel.extend({
             });
 
             var fs = [];
+            var undefined_fs = [];
             _.each(events, function (event) {
                 var data =  event.record[fieldName];
                 if (!_.contains(['many2many', 'one2many'], field.type)) {
@@ -552,15 +582,18 @@ return AbstractModel.extend({
                 }
                 _.each(data, function (_value) {
                     var value = _.isArray(_value) ? _value[0] : _value;
-                    fs.push({
+                    var f = {
                         'color_index': self.model_color === (field.relation || element.model) ? value : false,
                         'value': value,
-                        'label': fieldUtils.format[field.type](_value, field),
+                        'label': fieldUtils.format[field.type](_value, field) || _t("Undefined"),
                         'avatar_model': field.relation || element.model,
-                    });
+                    };
+                    // if field used as color does not have value then push filter in undefined_fs,
+                    // such filters should come last in filter list with Undefined string, later merge it with fs
+                    value ? fs.push(f) : undefined_fs.push(f);
                 });
             });
-            _.each(fs, function (f) {
+            _.each(_.union(fs, undefined_fs), function (f) {
                 var f1 = _.findWhere(filter.filters, f);
                 if (f1) {
                     f1.display = true;
@@ -598,6 +631,7 @@ return AbstractModel.extend({
     /**
      * parse the server values to javascript framwork
      *
+     * @private
      * @param {Object} data the server data to parse
      */
     _parseServerData: function (data) {
@@ -610,12 +644,16 @@ return AbstractModel.extend({
     },
     /**
      * Transform OpenERP event object to fullcalendar event object
+     *
+     * @private
+     * @param {Object} evt
      */
     _recordToCalendarEvent: function (evt) {
         var date_start;
         var date_stop;
         var date_delay = evt[this.mapping.date_delay] || 1.0,
-            all_day = this.mapping.all_day ? evt[this.mapping.all_day] : false,
+            all_day = this.fields[this.mapping.date_start].type === 'date' ||
+                this.mapping.all_day && evt[this.mapping.all_day] || false,
             the_title = '',
             attendees = [];
 
@@ -639,8 +677,6 @@ return AbstractModel.extend({
         if (this.mapping.all_day && evt[this.mapping.all_day]) {
             date_stop.add(1, 'days');
         }
-        var isAllDay = this.fields[this.mapping.date_start].type === 'date' ||
-                        this.mapping.all_day && evt[this.mapping.all_day] || false;
         var r = {
             'record': evt,
             'start': date_start,
@@ -648,7 +684,7 @@ return AbstractModel.extend({
             'r_start': date_start,
             'r_end': date_stop,
             'title': the_title,
-            'allDay': isAllDay,
+            'allDay': all_day,
             'id': evt.id,
             'attendees':attendees,
         };

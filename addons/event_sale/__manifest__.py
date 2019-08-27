@@ -21,11 +21,13 @@ this event.
     'depends': ['event', 'sale_management'],
     'data': [
         'views/event_views.xml',
+        'views/event_views_template.xml',
         'views/product_views.xml',
         'views/sale_order_views.xml',
         'data/event_sale_data.xml',
         'report/event_event_templates.xml',
         'security/ir.model.access.csv',
+        'security/event_security.xml',
         'wizard/event_edit_registration.xml',
     ],
     'demo': ['data/event_demo.xml'],

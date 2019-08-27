@@ -14,11 +14,12 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, misc
 
 class MercuryTransaction(models.Model):
     _name = 'pos_mercury.mercury_transaction'
+    _description = 'Point of Sale Mercury Transaction'
 
     def _get_pos_session(self):
         pos_session = self.env['pos.session'].search([('state', '=', 'opened'), ('user_id', '=', self.env.uid)], limit=1)
         if not pos_session:
-            raise UserError(_("No opened point of sale session for user %s found") % self.env.user.name)
+            raise UserError(_("No opened point of sale session for user %s found.") % self.env.user.name)
 
         pos_session.login()
 
@@ -61,11 +62,15 @@ class MercuryTransaction(models.Model):
             'SOAPAction': 'http://www.mercurypay.com/CreditTransaction',
         }
 
+        url = 'https://w1.mercurypay.com/ws/ws.asmx'
+        if self.env['ir.config_parameter'].sudo().get_param('pos_mercury.enable_test_env'):
+            url = 'https://w1.mercurycert.net/ws/ws.asmx'
+
         try:
-            r = requests.post('https://w1.mercurypay.com/ws/ws.asmx', data=xml_transaction, headers=headers, timeout=65)
+            r = requests.post(url, data=xml_transaction, headers=headers, timeout=65)
             r.raise_for_status()
             response = werkzeug.utils.unescape(r.content.decode())
-        except:
+        except Exception:
             response = "timeout"
 
         return response

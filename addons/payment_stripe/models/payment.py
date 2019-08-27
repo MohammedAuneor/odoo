@@ -8,6 +8,7 @@ from odoo import api, fields, models, _
 from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
+from odoo.tools.float_utils import float_round
 
 _logger = logging.getLogger(__name__)
 
@@ -41,19 +42,18 @@ class PaymentAcquirerStripe(models.Model):
         stripe_tx_values = dict(tx_values)
         temp_stripe_tx_values = {
             'company': self.company_id.name,
-            'amount': tx_values.get('amount'),
-            'currency': tx_values.get('currency') and tx_values.get('currency').name or '',
-            'currency_id': tx_values.get('currency') and tx_values.get('currency').id or '',
-            'address_line1': tx_values.get('partner_address'),
+            'amount': tx_values['amount'],  # Mandatory
+            'currency': tx_values['currency'].name,  # Mandatory anyway
+            'currency_id': tx_values['currency'].id,  # same here
+            'address_line1': tx_values.get('partner_address'),  # Any info of the partner is not mandatory
             'address_city': tx_values.get('partner_city'),
-            'address_country': tx_values.get('partner_country') and tx_values['partner_country'].name or '',
+            'address_country': tx_values.get('partner_country') and tx_values.get('partner_country').name or '',
             'email': tx_values.get('partner_email'),
             'address_zip': tx_values.get('partner_zip'),
             'name': tx_values.get('partner_name'),
             'phone': tx_values.get('partner_phone'),
         }
 
-        temp_stripe_tx_values['returndata'] = stripe_tx_values.pop('return_url', '')
         stripe_tx_values.update(temp_stripe_tx_values)
         return stripe_tx_values
 
@@ -106,7 +106,7 @@ class PaymentTransactionStripe(models.Model):
     def _create_stripe_charge(self, acquirer_ref=None, tokenid=None, email=None):
         api_url_charge = 'https://%s/charges' % (self.acquirer_id._get_stripe_api_url())
         charge_params = {
-            'amount': int(self.amount if self.currency_id.name in INT_CURRENCIES else self.amount*100),
+            'amount': int(self.amount if self.currency_id.name in INT_CURRENCIES else float_round(self.amount * 100, 2)),
             'currency': self.currency_id.name,
             'metadata[reference]': self.reference,
             'description': self.reference,
@@ -117,16 +117,20 @@ class PaymentTransactionStripe(models.Model):
             charge_params['card'] = str(tokenid)
         if email:
             charge_params['receipt_email'] = email.strip()
+
+        _logger.info('_create_stripe_charge: Sending values to URL %s, values:\n%s', api_url_charge, pprint.pformat(charge_params))
         r = requests.post(api_url_charge,
                           auth=(self.acquirer_id.stripe_secret_key, ''),
                           params=charge_params,
                           headers=STRIPE_HEADERS)
-        return r.json()
+        res = r.json()
+        _logger.info('_create_stripe_charge: Values received:\n%s', pprint.pformat(res))
+        return res
 
     @api.multi
     def stripe_s2s_do_transaction(self, **kwargs):
         self.ensure_one()
-        result = self._create_stripe_charge(acquirer_ref=self.payment_token_id.acquirer_ref)
+        result = self._create_stripe_charge(acquirer_ref=self.payment_token_id.acquirer_ref, email=self.partner_email)
         return self._stripe_s2s_validate_tree(result)
 
 
@@ -135,20 +139,22 @@ class PaymentTransactionStripe(models.Model):
 
         refund_params = {
             'charge': self.acquirer_reference,
-            'amount': int(self.amount*100), # by default, stripe refund the full amount (we don't really need to specify the value)
+            'amount': int(float_round(self.amount * 100, 2)), # by default, stripe refund the full amount (we don't really need to specify the value)
             'metadata[reference]': self.reference,
         }
 
+        _logger.info('_create_stripe_refund: Sending values to URL %s, values:\n%s', api_url_refund, pprint.pformat(refund_params))
         r = requests.post(api_url_refund,
                             auth=(self.acquirer_id.stripe_secret_key, ''),
                             params=refund_params,
                             headers=STRIPE_HEADERS)
-        return r.json()
+        res = r.json()
+        _logger.info('_create_stripe_refund: Values received:\n%s', pprint.pformat(res))
+        return res
 
     @api.multi
     def stripe_s2s_do_refund(self, **kwargs):
         self.ensure_one()
-        self.state = 'refunding'
         result = self._create_stripe_refund()
         return self._stripe_s2s_validate_tree(result)
 
@@ -183,18 +189,17 @@ class PaymentTransactionStripe(models.Model):
     @api.multi
     def _stripe_s2s_validate_tree(self, tree):
         self.ensure_one()
-        if self.state not in ('draft', 'pending', 'refunding'):
+        if self.state != 'draft':
             _logger.info('Stripe: trying to validate an already validated tx (ref %s)', self.reference)
             return True
 
         status = tree.get('status')
         if status == 'succeeded':
-            new_state = 'refunded' if self.state == 'refunding' else 'done'
             self.write({
-                'state': new_state,
-                'date_validate': fields.datetime.now(),
+                'date': fields.datetime.now(),
                 'acquirer_reference': tree.get('id'),
             })
+            self._set_transaction_done()
             self.execute_callback()
             if self.payment_token_id:
                 self.payment_token_id.verified = True
@@ -203,11 +208,11 @@ class PaymentTransactionStripe(models.Model):
             error = tree['error']['message']
             _logger.warn(error)
             self.sudo().write({
-                'state': 'error',
                 'state_message': error,
                 'acquirer_reference': tree.get('id'),
-                'date_validate': fields.datetime.now(),
+                'date': fields.datetime.now(),
             })
+            self._set_transaction_cancel()
             return False
 
     @api.multi
@@ -252,7 +257,7 @@ class PaymentTokenStripe(models.Model):
             description = 'Partner: %s (id: %s)' % (partner_id.name, partner_id.id)
 
         if not token:
-            raise Exception('stripe_create: No token provided!')
+            raise UserError(_("Stripe: no payment token was provided or the token creation failed."))
 
         res = self._stripe_create_customer(token, description, payment_acquirer.id)
 

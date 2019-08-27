@@ -5,7 +5,7 @@ import random
 
 from odoo import api, fields, models, _
 from odoo.addons.base_geolocalize.models.res_partner import geo_find, geo_query_address
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, AccessError
 
 class CrmLead(models.Model):
     _inherit = "crm.lead"
@@ -18,7 +18,7 @@ class CrmLead(models.Model):
         'lead_id',
         'partner_id',
         string='Partner not interested')
-    date_assign = fields.Date('Assignation Date', help="Last date this case was forwarded/assigned to a partner")
+    date_assign = fields.Date('Partner Assignation Date', help="Last date this case was forwarded/assigned to a partner")
 
     @api.multi
     def _merge_data(self, fields):
@@ -86,19 +86,10 @@ class CrmLead(models.Model):
             if lead.partner_latitude and lead.partner_longitude:
                 continue
             if lead.country_id:
-                result = geo_find(geo_query_address(street=lead.street,
-                                                    zip=lead.zip,
-                                                    city=lead.city,
-                                                    state=lead.state_id.name,
-                                                    country=lead.country_id.name))
-
-                if result is None:
-                    result = geo_find(geo_query_address(
-                        city=lead.city,
-                        state=lead.state_id.name,
-                        country=lead.country_id.name
-                    ))
-
+                apikey = self.env['ir.config_parameter'].sudo().get_param('google.api_key_geocode')
+                result = self.env['res.partner']._geo_localize(apikey,
+                                                               lead.street, lead.zip, lead.city,
+                                                               lead.state_id.name, lead.country_id.name)
                 if result:
                     lead.write({
                         'partner_latitude': result[0],
@@ -233,7 +224,7 @@ class CrmLead(models.Model):
             # will be modified by the portal form. If no activity exist we create a new one instead
             # that we assign to the portal user.
 
-            user_activity = lead.activity_ids.filtered(lambda activity: activity.user_id == self.env.user)[:1]
+            user_activity = lead.sudo().activity_ids.filtered(lambda activity: activity.user_id == self.env.user)[:1]
             if values['activity_date_deadline']:
                 if user_activity:
                     user_activity.sudo().write({
@@ -279,3 +270,35 @@ class CrmLead(models.Model):
         return {
             'id': lead.id
         }
+
+    #
+    #   DO NOT FORWARD PORT IN MASTER
+    #   instead, crm.lead should implement portal.mixin
+    #
+    @api.multi
+    def get_access_action(self, access_uid=None):
+        """ Instead of the classic form view, redirect to the online document for
+        portal users or if force_website=True in the context. """
+        self.ensure_one()
+
+        user, record = self.env.user, self
+        if access_uid:
+            try:
+                record.check_access_rights('read')
+                record.check_access_rule("read")
+            except AccessError:
+                return super(CrmLead, self).get_access_action(access_uid)
+            user = self.env['res.users'].sudo().browse(access_uid)
+            record = self.sudo(user)
+        if user.share or self.env.context.get('force_website'):
+            try:
+                record.check_access_rights('read')
+                record.check_access_rule('read')
+            except AccessError:
+                pass
+            else:
+                return {
+                    'type': 'ir.actions.act_url',
+                    'url': '/my/opportunity/%s' % record.id,
+                }
+        return super(CrmLead, self).get_access_action(access_uid)

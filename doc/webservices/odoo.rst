@@ -32,15 +32,15 @@ Connection
 
     .. rst-class:: setupcode hidden
 
-        .. code-block:: python
+        .. code-block:: python3
 
-            import xmlrpclib
-            info = xmlrpclib.ServerProxy('https://demo.odoo.com/start').start()
+            import xmlrpc.client
+            info = xmlrpc.client.ServerProxy('https://demo.odoo.com/start').start()
             url, db, username, password = \
                 info['host'], info['database'], info['user'], info['password']
-            common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(url))
+            common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
             uid = common.authenticate(db, username, password, {})
-            models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(url))
+            models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
         .. code-block:: ruby
 
@@ -118,7 +118,7 @@ parameters
 
 .. switcher::
 
-    .. code-block:: python
+    .. code-block:: python3
 
         url = <insert server URL>
         db = <insert database name>
@@ -156,10 +156,10 @@ database:
 
 .. switcher::
 
-    .. code-block:: python
+    .. code-block:: python3
 
-        import xmlrpclib
-        info = xmlrpclib.ServerProxy('https://demo.odoo.com/start').start()
+        import xmlrpc.client
+        info = xmlrpc.client.ServerProxy('https://demo.odoo.com/start').start()
         url, db, username, password = \
             info['host'], info['database'], info['user'], info['password']
 
@@ -234,9 +234,9 @@ the login.
 
 .. switcher::
 
-    .. code-block:: python
+    .. code-block:: python3
 
-        common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(url))
+        common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
         common.version()
 
     .. code-block:: ruby
@@ -271,7 +271,7 @@ the login.
 
 .. switcher::
 
-    .. code-block:: python
+    .. code-block:: python3
 
         uid = common.authenticate(db, username, password, {})
 
@@ -316,9 +316,9 @@ Each call to ``execute_kw`` takes the following parameters:
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
-            models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(url))
+            models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
             models.execute_kw(db, uid, password,
                 'res.partner', 'check_access_rights',
                 ['read'], {'raise_exception': False})
@@ -371,7 +371,7 @@ companies for instance:
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password,
                 'res.partner', 'search',
@@ -415,7 +415,7 @@ available to only retrieve a subset of all matched records.
 
     .. switcher::
     
-        .. code-block:: python
+        .. code-block:: python3
     
             models.execute_kw(db, uid, password,
                 'res.partner', 'search',
@@ -465,7 +465,7 @@ only the number of records matching the query. It takes the same
 
     .. switcher::
     
-        .. code-block:: python
+        .. code-block:: python3
     
             models.execute_kw(db, uid, password,
                 'res.partner', 'search_count',
@@ -517,7 +517,7 @@ which tends to be a huge amount.
     
     .. switcher::
     
-        .. code-block:: python
+        .. code-block:: python3
     
             ids = models.execute_kw(db, uid, password,
                 'res.partner', 'search',
@@ -581,7 +581,7 @@ Conversedly, picking only three fields deemed interesting.
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password,
                 'res.partner', 'read',
@@ -633,7 +633,7 @@ updating a record):
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(
                 db, uid, password, 'res.partner', 'fields_get',
@@ -718,7 +718,7 @@ if that list is not provided it will fetch all fields of matched records):
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password,
                 'res.partner', 'search_read',
@@ -804,7 +804,7 @@ set through the mapping argument, the default value will be used.
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             id = models.execute_kw(db, uid, password, 'res.partner', 'create', [{
                 'name': "New Partner",
@@ -862,7 +862,7 @@ a record).
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password, 'res.partner', 'write', [[id], {
                 'name': "Newer partner"
@@ -917,7 +917,7 @@ Records can be deleted in bulk by providing their ids to
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password, 'res.partner', 'unlink', [[id]])
             # check if the deleted record is still in the database
@@ -1018,7 +1018,7 @@ Provides information about Odoo models via its various fields
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             models.execute_kw(db, uid, password, 'ir.model', 'create', [{
                 'name': "Custom Model",
@@ -1159,7 +1159,7 @@ activated as actual fields on the model.
 
     .. switcher::
 
-        .. code-block:: python
+        .. code-block:: python3
 
             id = models.execute_kw(db, uid, password, 'ir.model', 'create', [{
                 'name': "Custom Model",
@@ -1295,90 +1295,6 @@ activated as actual fields on the model.
             }
         ]
 
-Report printing
----------------
-
-Available reports can be listed by searching the ``ir.actions.report``
-model, fields of interest being
-
-``model``
-    the model on which the report applies, can be used to look for available
-    reports on a specific model
-``name``
-    human-readable report name
-``report_name``
-    the technical name of the report, used to print it
-
-Reports can be printed over RPC with the following information:
-
-* the name of the report (``report_name``)
-* the ids of the records to include in the report
-
-.. container:: doc-aside
-
-    .. switcher::
-
-        .. code-block:: python
-
-            invoice_ids = models.execute_kw(
-                db, uid, password, 'account.invoice', 'search',
-                [[('type', '=', 'out_invoice'), ('state', '=', 'open')]])
-            report = xmlrpclib.ServerProxy('{}/xmlrpc/2/report'.format(url))
-            result = report.render_report(
-                db, uid, password, 'account.report_invoice', invoice_ids)
-            report_data = result['result'].decode('base64')
-
-        .. code-block:: php
-
-            $invoice_ids = $models->execute_kw(
-                $db, $uid, $password,
-                'account.invoice', 'search',
-                array(array(array('type', '=', 'out_invoice'),
-                            array('state', '=', 'open'))));
-            $report = ripcord::client("$url/xmlrpc/2/report");
-            $result = $report->render_report(
-                $db, $uid, $password,
-                'account.report_invoice', $invoice_ids);
-            $report_data = base64_decode($result['result']);
-
-        .. code-block:: ruby
-
-            require 'base64'
-            invoice_ids = models.execute_kw(
-                db, uid, password,
-                'account.invoice', 'search',
-                [[['type', '=', 'out_invoice'], ['state', '=', 'open']]])
-            report = XMLRPC::Client.new2("#{url}/xmlrpc/2/report").proxy
-            result = report.render_report(
-                db, uid, password,
-                'account.report_invoice', invoice_ids)
-            report_data = Base64.decode64(result['result'])
-
-        .. code-block:: java
-
-            final Object[] invoice_ids = (Object[])models.execute(
-                "execute_kw", asList(
-                    db, uid, password,
-                    "account.invoice", "search",
-                    asList(asList(
-                        asList("type", "=", "out_invoice"),
-                        asList("state", "=", "open")))
-            ));
-            final XmlRpcClientConfigImpl report_config = new XmlRpcClientConfigImpl();
-            report_config.setServerURL(
-                new URL(String.format("%s/xmlrpc/2/report", url)));
-            final Map<String, Object> result = (Map<String, Object>)client.execute(
-                report_config, "render_report", asList(
-                    db, uid, password,
-                    "account.report_invoice",
-                    invoice_ids));
-            final byte[] report_data = DatatypeConverter.parseBase64Binary(
-                (String)result.get("result"));
-
-    .. note::
-
-        the report is sent as PDF binary data encoded in base64_, it must be
-        decoded and may need to be saved to disk before use
 
 .. _PostgreSQL: http://www.postgresql.org
 .. _XML-RPC: http://en.wikipedia.org/wiki/XML-RPC

@@ -4,10 +4,14 @@ import requests
 from lxml import etree, objectify
 from xml.etree import ElementTree as ET
 from uuid import uuid4
+import pprint
+import logging
 
-from odoo import _
+from odoo.addons.payment.models.payment_acquirer import _partner_split_name
 from odoo.exceptions import ValidationError, UserError
 from odoo import _
+
+_logger = logging.getLogger(__name__)
 
 XMLNS = 'AnetApi/xml/v1/schema/AnetApiSchema.xsd'
 
@@ -89,10 +93,21 @@ class AuthorizeAPI():
 
         :param etree._Element data: etree data to process
         """
+        logged_data = data
         data = etree.tostring(data, encoding='utf-8')
+        for node_to_remove in ['//merchantAuthentication', '//creditCard']:
+            for node in logged_data.xpath(node_to_remove):
+                node.getparent().remove(node)
+        logged_data = str(etree.tostring(logged_data, encoding='utf-8', pretty_print=True)).replace(r'\n', '\n')
+        _logger.info('_authorize_request: Sending values to URL %s, values:\n%s', self.url, logged_data)
+
         r = requests.post(self.url, data=data, headers={'Content-Type': 'text/xml'})
         r.raise_for_status()
         response = strip_ns(r.content, XMLNS)
+
+        logged_data = etree.XML(r.content)
+        logged_data = str(etree.tostring(logged_data, encoding='utf-8', pretty_print=True)).replace(r'\n', '\n')
+        _logger.info('_authorize_request: Values received\n%s', logged_data)
         return response
 
     def _base_tree(self, requestType):
@@ -133,20 +148,27 @@ class AuthorizeAPI():
         """
         root = self._base_tree('createCustomerProfileRequest')
         profile = etree.SubElement(root, "profile")
-        etree.SubElement(profile, "merchantCustomerId").text = 'ODOO-%s-%s' % (partner.id, uuid4().hex[:8])
-        etree.SubElement(profile, "email").text = partner.email
+        # merchantCustomerId is ODOO-{partner.id}-{random hex string} truncated to maximum 20 characters
+        etree.SubElement(profile, "merchantCustomerId").text = ('ODOO-%s-%s' % (partner.id, uuid4().hex[:8]))[:20]
+        etree.SubElement(profile, "email").text = partner.email or ''
         payment_profile = etree.SubElement(profile, "paymentProfiles")
         etree.SubElement(payment_profile, "customerType").text = 'business' if partner.is_company else 'individual'
         billTo = etree.SubElement(payment_profile, "billTo")
+        if partner.is_company:
+            etree.SubElement(billTo, "firstName").text = ' '
+            etree.SubElement(billTo, "lastName").text = partner.name
+        else:
+            etree.SubElement(billTo, "firstName").text = _partner_split_name(partner.name)[0]
+            etree.SubElement(billTo, "lastName").text = _partner_split_name(partner.name)[1]
         etree.SubElement(billTo, "address").text = (partner.street or '' + (partner.street2 if partner.street2 else '')) or None
         
-        missing_fields = [partner._fields[field].string for field in ['city', 'country_id', 'zip'] if not partner[field]]
+        missing_fields = [partner._fields[field].string for field in ['city', 'country_id'] if not partner[field]]
         if missing_fields:
             raise ValidationError({'missing_fields': missing_fields})
         
         etree.SubElement(billTo, "city").text = partner.city
         etree.SubElement(billTo, "state").text = partner.state_id.name or None
-        etree.SubElement(billTo, "zip").text = partner.zip
+        etree.SubElement(billTo, "zip").text = partner.zip or ''
         etree.SubElement(billTo, "country").text = partner.country_id.name or None
         payment = etree.SubElement(payment_profile, "payment")
         creditCard = etree.SubElement(payment, "creditCard")
@@ -199,10 +221,17 @@ class AuthorizeAPI():
         root = self._base_tree('createCustomerProfileFromTransactionRequest')
         etree.SubElement(root, "transId").text = transaction_id
         customer = etree.SubElement(root, "customer")
-        etree.SubElement(customer, "merchantCustomerId").text = 'ODOO-%s-%s' % (partner.id, uuid4().hex[:8])
+        # merchantCustomerId is ODOO-{partner.id}-{random hex string} truncated to maximum 20 characters
+        etree.SubElement(customer, "merchantCustomerId").text = ('ODOO-%s-%s' % (partner.id, uuid4().hex[:8]))[:20]
         etree.SubElement(customer, "email").text = partner.email or ''
         response = self._authorize_request(root)
         res = dict()
+        if response.find('customerProfileId') is None:  # Warning: do not use bool(etree) as the semantics is very misleading
+            _logger.warning(
+                'Unable to create customer payment profile, data missing from transaction. Transaction_id: %s - Partner_id: %s'
+                % (transaction_id, partner)
+            )
+            return res
         res['profile_id'] = response.find('customerProfileId').text
         res['payment_profile_id'] = response.find('customerPaymentProfileIdList/numericString').text
         root_profile = self._base_tree('getCustomerPaymentProfileRequest')
@@ -262,7 +291,7 @@ class AuthorizeAPI():
         payment_profile = etree.SubElement(profile, "paymentProfile")
         etree.SubElement(payment_profile, "paymentProfileId").text = token.acquirer_ref
         order = etree.SubElement(tx, "order")
-        etree.SubElement(order, "invoiceNumber").text = reference
+        etree.SubElement(order, "invoiceNumber").text = reference[:20]
         response = self._authorize_request(root)
         res = dict()
         (has_error, error_msg) = error_check(response)
@@ -297,7 +326,7 @@ class AuthorizeAPI():
         payment_profile = etree.SubElement(profile, "paymentProfile")
         etree.SubElement(payment_profile, "paymentProfileId").text = token.acquirer_ref
         order = etree.SubElement(tx, "order")
-        etree.SubElement(order, "invoiceNumber").text = reference
+        etree.SubElement(order, "invoiceNumber").text = reference[:20]
         response = self._authorize_request(root)
         res = dict()
         (has_error, error_msg) = error_check(response)

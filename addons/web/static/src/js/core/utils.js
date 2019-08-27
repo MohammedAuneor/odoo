@@ -52,20 +52,6 @@ var utils = {
         return Math.max(min, Math.min(max, val));
     },
     /**
-     * computes (Math.floor(a/b), a%b and passes that to the callback.
-     *
-     * returns the callback's result
-     */
-    divmod: function (a, b, fn) {
-        var mod = a%b;
-        // in python, sign(a % b) === sign(b). Not in JS. If wrong side, add a
-        // round of b
-        if (mod > 0 && b < 0 || mod < 0 && b > 0) {
-            mod += b;
-        }
-        return fn(Math.floor(a/b), mod);
-    },
-    /**
      * @param {number} value
      * @param {integer} decimals
      * @returns {boolean}
@@ -126,7 +112,17 @@ var utils = {
         var d2 = Math.pow(10, decimals);
         var val = _t('kMGTPE');
         var symbol = '';
-        for (var i = val.length - 1 ; i > 0 ; i--) {
+        var numberMagnitude = number.toExponential().split('e')[1];
+        // the case numberMagnitude >= 21 corresponds to a number
+        // better expressed in the scientific format.
+        if (numberMagnitude >= 21) {
+            // we do not use number.toExponential(decimals) because we want to
+            // avoid the possible useless O decimals: 1e.+24 prefered to 1.0e+24
+            number = Math.round(number * Math.pow(10, decimals - numberMagnitude)) / d2;
+            // formatterCallback seems useless here.
+            return number + 'e' + numberMagnitude;
+        }
+        for (var i = val.length; i > 0 ; i--) {
             var s = Math.pow(10, i * 3);
             if (s <= number / Math.pow(10, minDigits - 1)) {
                 number = Math.round(number * d2 / s) / d2;
@@ -228,7 +224,7 @@ var utils = {
      * @returns {boolean}
      */
     is_bin_size: function (v) {
-        return (/^\d+(\.\d*)? \w+$/).test(v);
+        return (/^\d+(\.\d*)? [^0-9]+$/).test(v);
     },
     /**
      * @param {any} node
@@ -290,17 +286,6 @@ var utils = {
         return new Array(size - str.length + 1).join('0') + str;
     },
     /**
-     * Passes the fractional and integer parts of x to the callback, returns
-     * the callback's result
-     */
-    modf: function (x, fn) {
-        var mod = x%1;
-        if (mod < 0) {
-            mod += 1;
-        }
-        return fn(mod, Math.floor(x));
-    },
-    /**
      * performs a half up rounding with a fixed amount of decimals, correcting for float loss of precision
      * See the corresponding float_round() in server/tools/float_utils.py for more info
      * @param {Number} value the value to be rounded
@@ -324,7 +309,7 @@ var utils = {
         }
         var normalized_value = value / precision;
         var epsilon_magnitude = Math.log(Math.abs(normalized_value))/Math.log(2);
-        var epsilon = Math.pow(2, epsilon_magnitude - 53);
+        var epsilon = Math.pow(2, epsilon_magnitude - 52);
         normalized_value += normalized_value >= 0 ? epsilon : -epsilon;
 
         /**
@@ -392,6 +377,23 @@ var utils = {
         array[i2] = elem1;
         array[i1] = elem2;
     },
+
+    /**
+     * @param {string} value
+     * @param {boolean} allow_mailto
+     * @returns boolean
+     */
+    is_email: function (value, allow_mailto) {
+        // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+        var re;
+        if (allow_mailto) {
+            re = /^(mailto:)?(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        } else {
+            re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        }
+        return re.test(value);
+    },
+
     /**
      * @param {any} str
      * @param {any} elseValues
@@ -491,6 +493,20 @@ var utils = {
         }
     },
     /**
+     * Enhanced traverse function with 'path' building on traverse.
+     *
+     * @param {Object} tree an object describing a tree structure
+     * @param {function} f a callback
+     * @param {Object} path the path to the current 'tree' object
+     */
+    traversePath: function (tree, f, path) {
+        path = path || [];
+        f(tree, path);
+        _.each(tree.children, function (node) {
+            utils.traversePath(node, f, path.concat(tree));
+        });
+    },
+    /**
      * Visit a tree of objects and freeze all
      *
      * @param {Object} obj
@@ -503,6 +519,26 @@ var utils = {
           utils.deepFreeze(prop);
       });
       return Object.freeze(obj);
+    },
+
+    /**
+     * Find the closest value of the given one in the provided array
+     *
+     * @param {Number} num
+     * @param {Array} arr
+     * @returns {Number|undefined}
+     */
+    closestNumber: function (num, arr) {
+        var curr = arr[0];
+        var diff = Math.abs (num - curr);
+        for (var val = 0; val < arr.length; val++) {
+            var newdiff = Math.abs (num - arr[val]);
+            if (newdiff < diff) {
+                diff = newdiff;
+                curr = arr[val];
+            }
+        }
+        return curr;
     },
 
 };
