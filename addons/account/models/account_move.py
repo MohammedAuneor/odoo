@@ -233,6 +233,7 @@ class AccountMove(models.Model):
     @api.multi
     def _reverse_move(self, date=None, journal_id=None):
         self.ensure_one()
+        date = date or fields.Date.today()
         with self.env.norecompute():
             reversed_move = self.copy(default={
                 'date': date,
@@ -473,8 +474,8 @@ class AccountMoveLine(models.Model):
     is_unaffected_earnings_line = fields.Boolean(string="Is Unaffected Earnings Line", compute="_compute_is_unaffected_earnings_line", help="Tells whether or not this line belongs to an unaffected earnings account")
 
     _sql_constraints = [
-        ('credit_debit1', 'CHECK (credit*debit=0)', 'Wrong credit or debit value in accounting entry !'),
-        ('credit_debit2', 'CHECK (credit+debit>=0)', 'Wrong credit or debit value in accounting entry !'),
+        ('credit_debit1', 'CHECK (credit*debit=0)', 'Wrong credit or debit value in accounting entry! Credit or debit should be zero.'),
+        ('credit_debit2', 'CHECK (credit+debit>=0)', 'Wrong credit or debit value in accounting entry! Credit and debit should be positive.'),
     ]
 
     @api.model
@@ -485,12 +486,13 @@ class AccountMoveLine(models.Model):
 
         #compute the default credit/debit of the next line in case of a manual entry
         balance = 0
-        for line in self._context['line_ids']:
-            if line[2]:  # in case of command 0: add a record with values
-                balance += line[2].get('debit', 0) - line[2].get('credit', 0)
-            elif line[0] == 2:  # line has been deleted
-                line_obj = self.browse(line[1])
-                balance -= line_obj.debit - line_obj.credit
+        for line in self.move_id.resolve_2many_commands(
+                'line_ids', self._context['line_ids'], fields=['credit', 'debit']):
+            balance += line.get('debit', 0) - line.get('credit', 0)
+        # if we are here, line_ids is in context, so journal_id should also be.
+        currency = self._context.get('journal_id') and self.env["account.journal"].browse(self._context['journal_id']).company_id.currency_id
+        if currency:
+            balance = currency.round(balance)
         if balance < 0:
             rec.update({'debit': -balance})
         if balance > 0:
@@ -663,7 +665,7 @@ class AccountMoveLine(models.Model):
     @api.model
     def get_reconciliation_proposition(self, account_id, partner_id=False):
         """ Returns two lines whose amount are opposite """
-        
+
         target_currency = (self.currency_id and self.amount_currency) and self.currency_id or self.company_id.currency_id
         partner_id_condition = partner_id and 'AND a.partner_id = %(partner_id)s' or ''
 
@@ -849,7 +851,7 @@ class AccountMoveLine(models.Model):
                 amount_currency = line.amount_currency
 
             target_currency = target_currency or company_currency
-            
+
             ctx = context.copy()
             ctx.update({'date': target_date or line.date})
             # Use case:
@@ -858,13 +860,13 @@ class AccountMoveLine(models.Model):
             # 1)    25      0            0            NULL
             # 2)    17      0           25             EUR
             # 3)    33      0           25             YEN
-            # 
+            #
             # If we ask to see the information in the reconciliation widget in company currency, we want to see
             # The following informations
             # 1) 25 USD (no currency information)
             # 2) 17 USD [25 EUR] (show 25 euro in currency information, in the little bill)
             # 3) 33 USD [25 YEN] (show 25 yen in currencu information)
-            # 
+            #
             # If we ask to see the information in another currency than the company let's say EUR
             # 1) 35 EUR [25 USD]
             # 2) 25 EUR (no currency information)
@@ -1727,7 +1729,8 @@ class AccountPartialReconcile(models.Model):
         move_date = self.debit_move_id.date
         newly_created_move = self.env['account.move']
         with self.env.norecompute():
-            for move in (self.debit_move_id.move_id, self.credit_move_id.move_id):
+            # We use a set here in case the reconciled lines belong to the same move (it happens with POS)
+            for move in {self.debit_move_id.move_id, self.credit_move_id.move_id}:
                 #move_date is the max of the 2 reconciled items
                 if move_date < move.date:
                     move_date = move.date
