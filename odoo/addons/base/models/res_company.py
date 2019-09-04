@@ -70,8 +70,9 @@ class Company(models.Model):
     def name_get(self):
         res = []
         for company in self:
-            name = "Test-"  company.partner_id.name or ''
+            name = "Test-"  + company.partner_id.name or ''
             res.append((company.id, name))
+        return res
 
     
     @api.model_cr
