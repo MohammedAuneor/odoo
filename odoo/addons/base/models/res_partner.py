@@ -622,6 +622,8 @@ class Partner(models.Model):
             name = name.replace('\n', '<br/>')
         if self._context.get('show_vat') and partner.vat:
             name = "%s ‒ %s" % (name, partner.vat)
+        if partner.is_company:
+            name = "Test-" + name
         return name
 
     @api.multi

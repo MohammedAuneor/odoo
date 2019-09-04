@@ -61,9 +61,19 @@ class Company(models.Model):
         ('name_uniq', 'unique (name)', 'The company name must be unique !')
     ]
 
+    
     base_onboarding_company_state = fields.Selection([
         ('not_done', "Not done"), ('just_done', "Just done"), ('done', "Done")], string="State of the onboarding company step", default='not_done')
 
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for company in self:
+            name = "Test-"  company.partner_id.name or ''
+            res.append((company.id, name))
+
+    
     @api.model_cr
     def init(self):
         for company in self.search([('paperformat_id', '=', False)]):
