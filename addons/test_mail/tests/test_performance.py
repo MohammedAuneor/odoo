@@ -265,7 +265,7 @@ class TestAdvMailPerformance(TransactionCase):
     def test_message_post_one_email_notification(self):
         record = self.env['mail.test.simple'].create({'name': 'Test'})
 
-        with self.assertQueryCount(__system__=51, emp=71):  # com runbot: 51 - 71 // test_mail only: 48 - 68
+        with self.assertQueryCount(__system__=52, emp=72):  # com runbot: 52 - 72 // test_mail only: 48 - 68
             record.message_post(
                 body='<p>Test Post Performances with an email ping</p>',
                 partner_ids=self.customer.ids,
@@ -488,7 +488,7 @@ class TestHeavyMailPerformance(TransactionCase):
         })
         self.assertEqual(rec.message_partner_ids, self.partners | self.env.user.partner_id)
 
-        with self.assertQueryCount(__system__=61, emp=79):  # com runbot: 61 - 75 // test_mail only: 60 - 72
+        with self.assertQueryCount(__system__=62, emp=79):  # com runbot: 61 - 75 // test_mail only: 60 - 72
             rec.write({'user_id': self.user_portal.id})
 
         self.assertEqual(rec.message_partner_ids, self.partners | self.env.user.partner_id | self.user_portal.partner_id)

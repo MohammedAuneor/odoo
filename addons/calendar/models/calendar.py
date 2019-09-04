@@ -323,6 +323,12 @@ class AlarmManager(models.AbstractModel):
                 'rrule': rule
             }
 
+        # determine accessible events
+        events = self.env['calendar.event'].browse(result)
+        result = {
+            key: result[key]
+            for key in set(events._filter_access_rules('read').ids)
+        }
         return result
 
     def do_check_alarm_for_one_date(self, one_date, event, event_maxdelta, in_the_next_X_seconds, alarm_type, after=False, missing=False):
@@ -1059,11 +1065,13 @@ class Meeting(models.Model):
                 meeting_attendees |= attendee
                 meeting_partners |= partner
 
-            if meeting_attendees:
+            if meeting_attendees and not self._context.get('detaching'):
                 to_notify = meeting_attendees.filtered(lambda a: a.email != current_user.email)
                 to_notify._send_mail_to_attendees('calendar.calendar_template_meeting_invitation')
 
+            if meeting_attendees:
                 meeting.write({'attendee_ids': [(4, meeting_attendee.id) for meeting_attendee in meeting_attendees]})
+
             if meeting_partners:
                 meeting.message_subscribe(partner_ids=meeting_partners.ids)
 
@@ -1129,6 +1137,9 @@ class Meeting(models.Model):
             select_fields = ["id"]
             where_params_list = []
             for pos, arg in enumerate(domain):
+                # hack: if we received recurrent ids, we need to clean them
+                if arg[0] == 'id' and arg[1] in ('in', 'not in'):
+                    arg = (arg[0], arg[1], [calendar_id2real_id(id) for id in arg[2]])
                 if not arg[0] in ('start', 'stop', 'final_date', '&', '|'):
                     e = expression.expression([arg], self)
                     where_clause, where_params = e.to_sql()  # CAUTION, wont work if field is autojoin, not supported
@@ -1408,7 +1419,7 @@ class Meeting(models.Model):
             # do not copy the id
             if data.get('id'):
                 del data['id']
-            return meeting_origin.copy(default=data)
+            return meeting_origin.with_context(detaching=True).copy(default=data)
 
     @api.multi
     def action_detach_recurring_event(self):
