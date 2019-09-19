@@ -21,7 +21,7 @@ class StockMoveLine(models.Model):
         help='The stock operation where the packing has been made')
     move_id = fields.Many2one(
         'stock.move', 'Stock Move',
-        help="Change to a better name")
+        help="Change to a better name", index=True)
     product_id = fields.Many2one('product.product', 'Product', ondelete="cascade")
     product_uom_id = fields.Many2one('product.uom', 'Unit of Measure', required=True)
     product_qty = fields.Float(
@@ -141,7 +141,7 @@ class StockMoveLine(models.Model):
         """
         res = {}
         if self.qty_done and self.product_id.tracking == 'serial':
-            if float_compare(self.qty_done, 1.0, precision_rounding=self.move_id.product_id.uom_id.rounding) != 0:
+            if float_compare(self.qty_done, 1.0, precision_rounding=self.product_id.uom_id.rounding) != 0:
                 message = _('You can only process 1.0 %s for products with unique serial number.') % self.product_id.uom_id.name
                 res['warning'] = {'title': _('Warning'), 'message': message}
         return res
@@ -185,6 +185,8 @@ class StockMoveLine(models.Model):
 
         ml = super(StockMoveLine, self).create(vals)
         if ml.state == 'done':
+            if 'qty_done' in vals:
+                ml.move_id.product_uom_qty = ml.move_id.quantity_done
             if ml.product_id.type == 'product':
                 Quant = self.env['stock.quant']
                 quantity = ml.product_uom_id._compute_quantity(ml.qty_done, ml.move_id.product_id.uom_id,rounding_method='HALF-UP')
@@ -268,13 +270,16 @@ class StockMoveLine(models.Model):
                             except UserError:
                                 pass
                     if new_product_qty != ml.product_qty:
-                        new_product_uom_qty = self.product_id.uom_id._compute_quantity(new_product_qty, self.product_uom_id, rounding_method='HALF-UP')
+                        new_product_uom_qty = ml.product_id.uom_id._compute_quantity(new_product_qty, ml.product_uom_id, rounding_method='HALF-UP')
                         ml.with_context(bypass_reservation_update=True).product_uom_qty = new_product_uom_qty
 
         # When editing a done move line, the reserved availability of a potential chained move is impacted. Take care of running again `_action_assign` on the concerned moves.
         next_moves = self.env['stock.move']
         if updates or 'qty_done' in vals:
-            for ml in self.filtered(lambda ml: ml.move_id.state == 'done' and ml.product_id.type == 'product'):
+            mls = self.filtered(lambda ml: ml.move_id.state == 'done' and ml.product_id.type == 'product')
+            if not updates:  # we can skip those where qty_done is already good up to UoM rounding
+                mls = mls.filtered(lambda ml: not float_is_zero(ml.qty_done - vals['qty_done'], precision_rounding=ml.product_uom_id.rounding))
+            for ml in mls:
                 # undo the original move line
                 qty_done_orig = ml.move_id.product_uom._compute_quantity(ml.qty_done, ml.move_id.product_id.uom_id, rounding_method='HALF-UP')
                 in_date = Quant._update_available_quantity(ml.product_id, ml.location_dest_id, -qty_done_orig, lot_id=ml.lot_id,
@@ -508,6 +513,8 @@ class StockMoveLine(models.Model):
                         candidate.product_uom_qty = 0.0
                     else:
                         candidate.unlink()
+                    if float_is_zero(quantity, precision_rounding=rounding):
+                        break
                 else:
                     # split this move line and assign the new part to our extra move
                     quantity_split = float_round(
@@ -515,8 +522,6 @@ class StockMoveLine(models.Model):
                         precision_rounding=self.product_uom_id.rounding,
                         rounding_method='UP')
                     candidate.product_uom_qty = self.product_id.uom_id._compute_quantity(quantity_split, candidate.product_uom_id, rounding_method='HALF-UP')
-                    quantity -= quantity_split
                     move_to_recompute_state |= candidate.move_id
-                if quantity == 0.0:
                     break
             move_to_recompute_state._recompute_state()

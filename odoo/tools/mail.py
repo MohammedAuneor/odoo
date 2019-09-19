@@ -34,7 +34,7 @@ safe_attrs = clean.defs.safe_attrs | frozenset(
     ['style',
      'data-o-mail-quote',  # quote detection
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-id', 'data-oe-nodeid',
-     'data-publish', 'data-id', 'data-res_id', 'data-member_id', 'data-view-id'
+     'data-publish', 'data-id', 'data-res_id', 'data-interval', 'data-member_id', 'data-scroll-background-ratio', 'data-view-id',
      ])
 
 
@@ -45,9 +45,10 @@ class _Cleaner(clean.Cleaner):
     _style_whitelist = [
         'font-size', 'font-family', 'font-weight', 'background-color', 'color', 'text-align',
         'line-height', 'letter-spacing', 'text-transform', 'text-decoration',
-        'float', 'vertical-align',
+        'float', 'vertical-align', 'display',
         'padding', 'padding-top', 'padding-left', 'padding-bottom', 'padding-right',
         'margin', 'margin-top', 'margin-left', 'margin-bottom', 'margin-right',
+        'white-space',
         # box model
         'border', 'border-color', 'border-radius', 'border-style', 'border-width',
         'height', 'margin', 'padding', 'width', 'max-width', 'min-width',

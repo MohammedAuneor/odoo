@@ -184,9 +184,13 @@ class PaymentAcquirer(models.Model):
     def _check_required_if_provider(self):
         """ If the field has 'required_if_provider="<provider>"' attribute, then it
         required if record.provider is <provider>. """
+        empty_field = []
         for acquirer in self:
-            if any(getattr(f, 'required_if_provider', None) == acquirer.provider and not acquirer[k] for k, f in self._fields.items()):
-                return False
+            for k, f in acquirer._fields.items():
+                if getattr(f, 'required_if_provider', None) == acquirer.provider and not acquirer[k]:
+                    empty_field.append(self.env['ir.model.fields'].search([('name', '=', k), ('model', '=', acquirer._name)]).field_description)
+        if empty_field:
+            raise ValidationError((', ').join(empty_field))
         return True
 
     _constraints = [
@@ -644,7 +648,7 @@ class PaymentTransaction(models.Model):
 
             # custom create
             custom_method_name = '%s_create' % acquirer.provider
-            if hasattr(acquirer, custom_method_name):
+            if hasattr(self, custom_method_name):
                 values.update(getattr(self, custom_method_name)(values))
 
         # Default value of reference is
@@ -695,6 +699,14 @@ class PaymentTransaction(models.Model):
             reference = init_ref + 'x' + str(ref_suffix)
             ref_suffix += 1
         return reference
+
+    def _get_json_info(self):
+        self.ensure_one()
+        return {
+            'state': self.state,
+            'acquirer_reference': self.acquirer_reference,
+            'reference': self.reference,
+        }
 
     def _generate_callback_hash(self):
         self.ensure_one()
