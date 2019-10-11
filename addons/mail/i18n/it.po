@@ -4615,7 +4615,7 @@ msgstr "Registra ID discussione"
 #: code:addons/mail/models/mail_message.py:899
 #, python-format
 msgid "Records:"
-msgstr ""
+msgstr "Record:"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__references
@@ -5194,7 +5194,7 @@ msgstr ""
 "Stato basato sulle attività\n"
 "In ritardo: data di scadenza già superata\n"
 "Oggi: attività in data odierna\n"
-"Pianificata: attività future."
+"Pianificato: attività future."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_email_template_preview__sub_model_object_field

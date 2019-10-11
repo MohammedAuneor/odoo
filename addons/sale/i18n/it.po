@@ -22,6 +22,7 @@
 # Paolo Valier, 2019
 # Mario Riva <mario.riva@gmail.com>, 2019
 # SebastianoPistore <SebastianoPistore.info@protonmail.ch>, 2019
+# Luigia Cimmino Caserta <lcc@odoo.com>, 2019
 # Sergio Zanchetta <primes2h@gmail.com>, 2019
 # 
 msgid ""
@@ -1102,7 +1103,7 @@ msgstr "Indirizzi del cliente"
 #: model:ir.model.fields,field_description:sale.field_sale_report__country_id
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Customer Country"
-msgstr "Paese del cliente"
+msgstr "Nazione cliente"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__commercial_partner_id
@@ -3011,7 +3012,7 @@ msgstr "La data richiesta è troppo presto."
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_user_id
 msgid "Responsible User"
-msgstr "Utente Responsabile"
+msgstr "Utente responsabile"
 
 #. module: sale
 #: model:ir.model,name:sale.model_sale_order
@@ -3037,7 +3038,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model,name:sale.model_sale_product_configurator
 msgid "Sale Product Configurator"
-msgstr ""
+msgstr "Configuratore Vendita Prodotto"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
