@@ -694,7 +694,7 @@ class PosOrder(models.Model):
             Invoice += new_invoice
 
             for line in order.lines:
-                self.with_context(local_context)._action_create_invoice_line(line, new_invoice.id)
+                order.with_context(local_context)._action_create_invoice_line(line, new_invoice.id)
 
             new_invoice.with_context(local_context).sudo().compute_taxes()
             order.sudo().write({'state': 'invoiced'})
@@ -763,7 +763,7 @@ class PosOrder(models.Model):
         for order in self:
             if order.lines and not order.amount_total:
                 continue
-            if (not order.lines) or (not order.statement_ids) or (abs(order.amount_total - order.amount_paid) > 0.00001):
+            if (not order.lines) or (not order.statement_ids) or (not float_is_zero((order.amount_total - order.amount_paid), precision_rounding=order.pricelist_id.currency_id.rounding)):
                 return False
         return True
 

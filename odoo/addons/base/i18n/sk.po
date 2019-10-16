@@ -8056,6 +8056,12 @@ msgid "Barcode scan in Mobile"
 msgstr ""
 
 #. module: base
+#: code:addons/base/models/ir_qweb_fields.py:607
+#, python-format
+msgid "Barcode symbology"
+msgstr ""
+
+#. module: base
 #: code:addons/base/models/ir_qweb_fields.py:603
 #, python-format
 msgid "Barcode type"
@@ -9571,7 +9577,7 @@ msgstr "Dátum Vytvorenia"
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_reveal
 msgid "Create Leads/Opportunities from your website's traffic"
-msgstr ""
+msgstr "Vytvoriť iniciatívy/príležitosti z prevádzky vašej webovej stránky"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.act_menu_create

@@ -15,6 +15,7 @@
 # Francesco Garganese <francesco.garganese@aeromnia.aero>, 2018
 # Luigi Di Naro <gigidn@gmail.com>, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2019
+# Petra <bop@odoo.com>, 2019
 # Sergio Zanchetta <primes2h@gmail.com>, 2019
 # 
 msgid ""
@@ -445,7 +446,7 @@ msgstr "Contatti Archiviati"
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__message_attachment_count
 #: model:ir.model.fields,field_description:website_slides.field_slide_slide__message_attachment_count
 msgid "Attachment Count"
-msgstr "Totale allegati"
+msgstr "Numero allegati"
 
 #. module: website_slides
 #: selection:slide.slide,download_security:0
@@ -1172,7 +1173,7 @@ msgstr "Numero di messaggi che richiedono un'azione"
 #: model:ir.model.fields,help:website_slides.field_slide_channel__message_has_error_counter
 #: model:ir.model.fields,help:website_slides.field_slide_slide__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Numero di messaggi con errori di invio"
+msgstr "Numero di messaggi con errore di consegna"
 
 #. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_channel__message_unread_counter
@@ -1490,7 +1491,7 @@ msgstr "Slide"
 #. module: website_slides
 #: model:ir.model,name:website_slides.model_slide_channel
 msgid "Slide Channel"
-msgstr ""
+msgstr "Canale Slide"
 
 #. module: website_slides
 #: model:ir.model,name:website_slides.model_slide_tag
