@@ -110,9 +110,10 @@ class PublisherWarrantyContract(AbstractModel):
             if result.get('enterprise_info'):
                 # Update expiration date
                 set_param = self.env['ir.config_parameter'].sudo().set_param
-                set_param('database.expiration_date', result['enterprise_info'].get('expiration_date'))
-                set_param('database.expiration_reason', result['enterprise_info'].get('expiration_reason', 'trial'))
-                set_param('database.enterprise_code', result['enterprise_info'].get('enterprise_code'))
+                pass
+                # set_param('database.expiration_date', result['enterprise_info'].get('expiration_date'))
+                # set_param('database.expiration_reason', result['enterprise_info'].get('expiration_reason', 'trial'))
+                # set_param('database.enterprise_code', result['enterprise_info'].get('enterprise_code'))
 
         except Exception:
             if cron_mode:
