@@ -698,6 +698,7 @@ class Database(http.Controller):
             monodb = db_monodb()
             if monodb:
                 d['databases'] = [monodb]
+        print(env.get_template("database_manager.html").render(d))
         return env.get_template("database_manager.html").render(d)
 
     @http.route('/web/database/selector', type='http', auth="none")
@@ -764,13 +765,13 @@ class Database(http.Controller):
             return self._render_template(error=error)
 
     @http.route('/web/database/restore', type='http', auth="none", methods=['POST'], csrf=False)
-    def restore(self, master_pwd, backup_file, name, copy=False):
+    def restore(self, master_pwd, backup_file, name, copy=False, delete_mail=False, reset_pwd=False, new_pwd=False):
         try:
             data_file = None
             db.check_super(master_pwd)
             with tempfile.NamedTemporaryFile(delete=False) as data_file:
                 backup_file.save(data_file)
-            db.restore_db(name, data_file.name, str2bool(copy))
+            db.restore_db(name, data_file.name, str2bool(copy), str2bool(delete_mail), str2bool(reset_pwd), new_pwd)
             return http.local_redirect('/web/database/manager')
         except Exception as e:
             error = "Database restore error: %s" % (str(e) or repr(e))
