@@ -248,7 +248,7 @@ def exp_restore(db_name, data, copy=False):
     return True
 
 @check_db_management_enabled
-def restore_db(db, dump_file, copy=False):
+def restore_db(db, dump_file, copy=False, delete_mail=False, reset_pwd=False, new_pwd="aaa"):
     assert isinstance(db, pycompat.string_types)
     if exp_db_exist(db):
         _logger.info('RESTORE DB: %s already exists', db)
@@ -282,6 +282,36 @@ def restore_db(db, dump_file, copy=False):
 
         if odoo.tools.exec_pg_command(pg_cmd, *pg_args):
             raise Exception("Couldn't restore database")
+        del_mails_cmd = """
+            DELETE FROM ir_mail_server;
+        """
+        del_fetch_mails_cmd = """
+            DELETE FROM fetchmail_server;
+        """
+        reset_pwd_cmd = """
+            UPDATE res_users SET password='%s';
+        """ % new_pwd
+
+        error = ""
+
+        if delete_mail:
+            try:
+                if odoo.tools.exec_pg_command(pg_cmd, *["--dbname=%s" % db, "--command=%s" % del_mails_cmd]):
+                    raise
+            except:
+                error += "\nCouldn't delete outgoing mails serveurs"
+            try:
+                if odoo.tools.exec_pg_command(pg_cmd, *["--dbname=%s" % db, "--command=%s" % del_fetch_mails_cmd]):
+                    raise
+            except:
+                error += "\nCouldn't delete income mails serveurs"
+
+        if reset_pwd:
+            try:
+                if odoo.tools.exec_pg_command(pg_cmd, *['--dbname=%s' % db, "--command=%s" % reset_pwd_cmd]):
+                    raise
+            except:
+                error += "\nCouldn't reset passwords"
 
         registry = odoo.modules.registry.Registry.new(db)
         with registry.cursor() as cr:
@@ -299,6 +329,22 @@ def restore_db(db, dump_file, copy=False):
                         cr.execute("CREATE EXTENSION unaccent")
                 except psycopg2.Error:
                     pass
+
+            try:
+                print('try install ribbon')
+                print( env['ir.module.module'].search([('name', '=', 'web_environment_ribbon')]))
+                modules = env['ir.module.module']
+                modules.update_list()
+                ribbon_module = modules.search([('name', '=', 'web_environment_ribbon')])
+                if len(ribbon_module):
+                    ribbon_module.button_immediate_install()
+                else:
+                    raise
+            except:
+                error += "\nCouldn't install ribbon module"
+
+        if error:
+            raise Exception(error)
 
     _logger.info('RESTORE DB: %s', db)
 
