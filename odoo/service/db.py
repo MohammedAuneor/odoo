@@ -248,7 +248,7 @@ def exp_restore(db_name, data, copy=False):
     return True
 
 @check_db_management_enabled
-def restore_db(db, dump_file, copy=False, delete_mail=False, reset_pwd=False, new_pwd="aaa"):
+def restore_db(db, dump_file, copy=False, delete_mail=False, reset_pwd=False, new_pwd=False):
     assert isinstance(db, pycompat.string_types)
     if exp_db_exist(db):
         _logger.info('RESTORE DB: %s already exists', db)
@@ -306,7 +306,7 @@ def restore_db(db, dump_file, copy=False, delete_mail=False, reset_pwd=False, ne
             except:
                 error += "\nCouldn't delete income mails serveurs"
 
-        if reset_pwd:
+        if reset_pwd and new_pwd:
             try:
                 if odoo.tools.exec_pg_command(pg_cmd, *['--dbname=%s' % db, "--command=%s" % reset_pwd_cmd]):
                     raise
