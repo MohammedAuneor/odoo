@@ -698,7 +698,6 @@ class Database(http.Controller):
             monodb = db_monodb()
             if monodb:
                 d['databases'] = [monodb]
-        print(env.get_template("database_manager.html").render(d))
         return env.get_template("database_manager.html").render(d)
 
     @http.route('/web/database/selector', type='http', auth="none")
