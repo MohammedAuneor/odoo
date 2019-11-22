@@ -157,7 +157,7 @@ class PaymentAcquirer(models.Model):
     def _check_authorization_support(self):
         for acquirer in self:
             if acquirer.auto_confirm == 'authorize' and acquirer.provider not in self._get_feature_support()['authorize']:
-                raise ValidationError('Transaction Authorization is not supported by this payment provider.')
+                raise ValidationError(_('Transaction Authorization is not supported by this payment provider.'))
         return True
 
     _constraints = [
@@ -366,6 +366,11 @@ class PaymentAcquirer(models.Model):
                 'res_id': self.ids[0],
                 'context': context,
             }
+    
+    @api.model
+    def get_disabled_s2s_providers(self):
+        """Returns the list of providers that no longer support s2s in payment forms."""
+        return []
 
 
 class PaymentTransaction(models.Model):
@@ -446,7 +451,7 @@ class PaymentTransaction(models.Model):
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         onchange_vals = self.on_change_partner_id(self.partner_id.id).get('value', {})
-        self.write(onchange_vals)
+        self.update(onchange_vals)
 
     @api.multi
     def on_change_partner_id(self, partner_id):
@@ -490,7 +495,7 @@ class PaymentTransaction(models.Model):
 
             # custom create
             custom_method_name = '%s_create' % acquirer.provider
-            if hasattr(acquirer, custom_method_name):
+            if hasattr(self, custom_method_name):
                 values.update(getattr(self, custom_method_name)(values))
 
         # Default value of reference is
@@ -527,9 +532,17 @@ class PaymentTransaction(models.Model):
         ref_suffix = 1
         init_ref = reference
         while self.env['payment.transaction'].sudo().search_count([('reference', '=', reference)]):
-            reference = init_ref + '-' + str(ref_suffix)
+            reference = init_ref + 'x' + str(ref_suffix)
             ref_suffix += 1
         return reference
+
+    def _get_json_info(self):
+        self.ensure_one()
+        return {
+            'state': self.state,
+            'acquirer_reference': self.acquirer_reference,
+            'reference': self.reference,
+        }
 
     # --------------------------------------------------
     # FORM RELATED METHODS
@@ -616,14 +629,14 @@ class PaymentTransaction(models.Model):
     @api.multi
     def action_capture(self):
         if any(self.mapped(lambda tx: tx.state != 'authorized')):
-            raise ValidationError('Only transactions in the Authorized status can be captured.')
+            raise ValidationError(_('Only transactions in the Authorized status can be captured.'))
         for tx in self:
             tx.s2s_capture_transaction()
 
     @api.multi
     def action_void(self):
         if any(self.mapped(lambda tx: tx.state != 'authorized')):
-            raise ValidationError('Only transactions in the Authorized status can be voided.')
+            raise ValidationError(_('Only transactions in the Authorized status can be voided.'))
         for tx in self:
             tx.s2s_void_transaction()
 

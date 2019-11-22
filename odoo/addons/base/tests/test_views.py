@@ -8,6 +8,8 @@ from lxml import etree
 from lxml.builder import E
 from psycopg2 import IntegrityError
 
+from odoo.osv.orm import modifiers_tests
+from odoo.exceptions import ValidationError
 from odoo.tests import common
 from odoo.tools import mute_logger
 
@@ -231,6 +233,24 @@ class TestViewInheritance(ViewCase):
         self.assertFalse(self.View.default_view(model='does.not.exist', view_type='form'))
         self.assertFalse(self.View.default_view(model=self.model, view_type='graph'))
 
+    def test_no_recursion(self):
+        r1 = self.makeView('R1')
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            r1.write({'inherit_id': r1.id})
+
+        r2 = self.makeView('R2', r1.id)
+        r3 = self.makeView('R3', r2.id)
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            r2.write({'inherit_id': r3.id})
+
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            r1.write({'inherit_id': r3.id})
+
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            r1.write({
+                'inherit_id': r1.id,
+                'arch': self.arch_for('itself', parent=True),
+            })
 
 class TestApplyInheritanceSpecs(ViewCase):
     """ Applies a sequence of inheritance specification nodes to a base
@@ -797,6 +817,10 @@ class TestViews(ViewCase):
                 string="Replacement title", version="7.0"
             ))
 
+    def test_modifiers(self):
+        # implemeted elsewhere...
+        modifiers_tests()
+
 
 class ViewModeField(ViewCase):
     """
@@ -821,6 +845,12 @@ class ViewModeField(ViewCase):
         })
         self.assertEqual(view2.mode, 'extension')
 
+        view2.write({'inherit_id': None})
+        self.assertEqual(view2.mode, 'primary')
+
+        view2.write({'inherit_id': view.id})
+        self.assertEqual(view2.mode, 'extension')
+
     @mute_logger('odoo.sql_db')
     def testModeExplicit(self):
         view = self.View.create({
@@ -833,6 +863,7 @@ class ViewModeField(ViewCase):
             'arch': '<qweb/>'
         })
         self.assertEqual(view.mode, 'primary')
+        self.assertEqual(view2.mode, 'primary')
 
         with self.assertRaises(IntegrityError):
             self.View.create({
@@ -883,6 +914,27 @@ class ViewModeField(ViewCase):
         })
 
         view.write({'mode': 'primary'})
+
+    def testChangeInheritOfPrimary(self):
+        """
+        A primary view with an inherit_id must remain primary when changing the inherit_id
+        """
+        base1 = self.View.create({
+            'inherit_id': None,
+            'arch': '<qweb/>',
+        })
+        base2 = self.View.create({
+            'inherit_id': None,
+            'arch': '<qweb/>',
+        })
+        view = self.View.create({
+            'mode': 'primary',
+            'inherit_id': base1.id,
+            'arch': '<qweb/>',
+        })
+        self.assertEqual(view.mode, 'primary')
+        view.write({'inherit_id': base2.id})
+        self.assertEqual(view.mode, 'primary')
 
 
 class TestDefaultView(ViewCase):
