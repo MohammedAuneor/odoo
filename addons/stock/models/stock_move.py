@@ -433,7 +433,11 @@ class StockMove(models.Model):
                     #Note that, for pulled moves we intentionally don't propagate on the procurement.
                     if propagated_changes_dict:
                         move.move_dest_ids.filtered(lambda m: m.state not in ('done', 'cancel')).write(propagated_changes_dict)
-        track_pickings = not self._context.get('mail_notrack') and any(field in vals for field in ['state', 'picking_id', 'partially_available'])
+        track_pickings = (
+            not self._context.get('mail_notrack')
+            and not self._context.get('tracking_disable')
+            and any(field in vals for field in ['state', 'picking_id', 'partially_available'])
+        )
         if track_pickings:
             to_track_picking_ids = set([move.picking_id.id for move in self if move.picking_id])
             if vals.get('picking_id'):
@@ -1078,7 +1082,7 @@ class StockMove(models.Model):
                 extra_move = extra_move._action_confirm()
 
             # link it to some move lines. We don't need to do it for move since they should be merged.
-            if not merge_into_self:
+            if not merge_into_self or not extra_move.picking_id:
                 for move_line in self.move_line_ids.filtered(lambda ml: ml.qty_done):
                     if float_compare(move_line.qty_done, extra_move_quantity, precision_rounding=rounding) <= 0:
                         # move this move line to our extra move
@@ -1144,7 +1148,7 @@ class StockMove(models.Model):
         for result_package in moves_todo\
                 .mapped('move_line_ids.result_package_id')\
                 .filtered(lambda p: p.quant_ids and len(p.quant_ids) > 1):
-            if len(result_package.quant_ids.filtered(lambda q: float_is_zero(abs(q.quantity) + abs(q.reserved_quantity), precision_rounding=q.product_uom_id.rounding)).mapped('location_id')) > 1:
+            if len(result_package.quant_ids.filtered(lambda q: not float_is_zero(abs(q.quantity) + abs(q.reserved_quantity), precision_rounding=q.product_uom_id.rounding)).mapped('location_id')) > 1:
                 raise UserError(_('You cannot move the same package content more than once in the same transfer or split the same package into two location.'))
         picking = moves_todo.mapped('picking_id')
         moves_todo.write({'state': 'done', 'date': fields.Datetime.now()})
