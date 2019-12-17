@@ -248,6 +248,32 @@
                                     <label for="radio_copy_false" class="custom-control-label">This database was moved</label>
                                 </div>
                             </div>
+
+
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input id="radio_delete_mail_true" name="delete_mail" type="radio" class="custom-control-input" value="true" checked="1">
+                                    <label for="radio_delete_mail_true" class="custom-control-label">Delete mails servers</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="radio_delete_mail_false" name="delete_mail" type="radio" class="custom-control-input" value="false">
+                                    <label for="radio_delete_mail_false" class="custom-control-label">Keep mails servers</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input id="radio_reset_pwd_true" name="reset_pwd" type="radio" class="custom-control-input" value="false">
+                                    <label for="radio_reset_pwd_true" class="custom-control-label">Reset all user passwords</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="radio_reset_pwd_false" name="reset_pwd" type="radio" class="custom-control-input" value="true" checked="1">
+                                    <label for="radio_reset_pwd_false" class="custom-control-label">Keep passwords</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                New Password
+                                <input id="new_pwd" type="text" name="new_pwd" class="form-control"/>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <input type="submit" value="Continue" class="btn btn-primary float-right"/>
