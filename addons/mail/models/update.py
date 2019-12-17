@@ -75,9 +75,9 @@ class PublisherWarrantyContract(AbstractModel):
 
         url = config.get("publisher_warranty_url")
 
-        r = requests.post(url, data=arguments, timeout=30)
-        r.raise_for_status()
-        return literal_eval(r.text)
+        # r = requests.post(url, data=arguments, timeout=30)
+        # r.raise_for_status()
+        return {"messages": []}
 
     @api.multi
     def update_notification(self, cron_mode=True):
