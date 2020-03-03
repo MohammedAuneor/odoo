@@ -20,7 +20,7 @@ class PaymentAcquirerStripeSCA(models.Model):
 
     def stripe_form_generate_values(self, tx_values):
         self.ensure_one()
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        base_url = self.get_base_url()
         stripe_session_data = {
             "payment_method_types[]": "card",
             "line_items[][amount]": int(
@@ -32,6 +32,7 @@ class PaymentAcquirerStripeSCA(models.Model):
             "line_items[][quantity]": 1,
             "line_items[][name]": tx_values["reference"],
             "client_reference_id": tx_values["reference"],
+            "payment_intent_data[description]": tx_values["reference"],
             "success_url": urls.url_join(base_url, StripeController._success_url) + "?reference=%s&return_url=%s" % (tx_values["reference"], tx_values.get('return_url')),
             "cancel_url": urls.url_join(base_url, StripeController._cancel_url) + "?reference=%s&return_url=%s" % (tx_values["reference"], tx_values.get('return_url')),
             "customer_email": tx_values["partner_email"] or tx_values["billing_partner_email"],
