@@ -77,7 +77,7 @@ class StatusController(http.Controller):
         """
         server = helpers.get_odoo_server_url()
         image = get_resource_path('hw_drivers', 'static/img', 'False.jpg')
-        if server == '':
+        if not server:
             credential = b64decode(token).decode('utf-8').split('|')
             url = credential[0]
             token = credential[1]
@@ -272,6 +272,8 @@ class Manager(Thread):
             if spec:
                 module = util.module_from_spec(spec)
                 spec.loader.exec_module(module)
+        http.addons_manifest = {}
+        http.root = http.Root()
 
     def send_alldevices(self):
         """
@@ -414,6 +416,7 @@ class Manager(Thread):
         """
         Thread that will check connected/disconnected device, load drivers if needed and contact the odoo server with the updates
         """
+        helpers.check_git_branch()
         helpers.check_certificate()
         updated_devices = {}
         self.send_alldevices()
