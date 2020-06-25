@@ -2469,6 +2469,8 @@ msgid ""
 "Based on Invoice: the tax is due as soon as the invoice is validated.\n"
 "Based on Payment: the tax is due as soon as the payment of the invoice is received."
 msgstr ""
+"Podľa faktúry: daň je splatná pri validácii faktúry.\n"
+"Podľa platby: daň je splatná prijatím úhrady."
 
 #. module: account
 #: selection:account.tax,tax_exigibility:0
@@ -4176,6 +4178,12 @@ msgstr ""
 "zostatkom."
 
 #. module: account
+#: code:addons/account/models/account_move.py:235
+#, python-format
+msgid "Difference debit - credit: "
+msgstr ""
+
+#. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
 msgid "Direct connection to your bank"
 msgstr "Priame spojenie na vašu banku"
@@ -5101,7 +5109,7 @@ msgstr "Má faktúry"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_has_outstanding
 msgid "Has Outstanding"
-msgstr ""
+msgstr "Má nevybavené"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner_has_unreconciled_entries
