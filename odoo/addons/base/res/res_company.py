@@ -67,6 +67,14 @@ class Company(models.Model):
         ('name_uniq', 'unique (name)', 'The company name must be unique !')
     ]
 
+    @api.multi
+    def name_get(self):
+        res = []
+        for company in self:
+            name = "Test-" + company.partner_id.name or ''
+            res.append((company.id, name))
+        return res
+
     @api.model_cr
     def init(self):
         for company in self.search([('paperformat_id', '=', False)]):
