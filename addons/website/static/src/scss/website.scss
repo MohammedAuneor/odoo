@@ -360,6 +360,9 @@ table.table_desc tr td {
 // Three columns
 
 .s_three_columns {
+    .card .media_iframe_video {
+        width: 100%;
+    }
     .align-items-stretch .card {
         height: 100%;
     }
@@ -1028,6 +1031,22 @@ table.table_desc tr td {
             border: none;
             box-shadow: none;
         }
+    }
+}
+
+// Navbar Dropdown Menu
+header {
+    // In mobile there is no need to limit the height...
+    @include media-breakpoint-up(lg) {
+        .navbar .dropdown-menu {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+    }
+    // ... but we limit the navbar-collapse height in mobile affix version
+    &.o_header_affix .navbar-collapse.show {
+        max-height: 80vh;
+        overflow-y: auto;
     }
 }
 
