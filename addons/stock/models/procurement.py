@@ -181,7 +181,7 @@ class ProcurementGroup(models.Model):
         rule = self._get_rule(product_id, location_id, values)
 
         if not rule:
-            raise UserError(_('No procurement rule found. Please verify the configuration of your routes'))
+            raise UserError(_('No procurement rule found for product %s. Please verify the configuration of your routes') % (product_id and product_id.id))
 
         getattr(rule, '_run_%s' % rule.action)(product_id, product_qty, product_uom, location_id, name, origin, values)
         return True
@@ -373,7 +373,7 @@ class ProcurementGroup(models.Model):
                                 if float_compare(remainder, 0.0, precision_rounding=orderpoint.product_uom.rounding) > 0:
                                     qty += orderpoint.qty_multiple - remainder
 
-                                if float_compare(qty, 0.0, precision_rounding=orderpoint.product_uom.rounding) < 0:
+                                if float_compare(qty, 0.0, precision_rounding=orderpoint.product_uom.rounding) <= 0:
                                     continue
 
                                 qty -= substract_quantity[orderpoint.id]
