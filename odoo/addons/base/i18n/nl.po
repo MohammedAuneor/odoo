@@ -3798,7 +3798,7 @@ msgstr ""
 "========================\n"
 "Staat de gebruiker toe om EDI documenten te maken voor Mexicaanse facturatie.\n"
 "\n"
-"Deze module staat de aanmaak van EDI documenten en de communicatie met de Mexicaanse gecertificeerde providers (PAC's) om te tekenen/annuleren toe..\n"
+"Deze module staat de aanmaak van EDI documenten en de communicatie met de Mexicaanse gecertificeerde providers (PAC's) om te tekenen/annuleren toe.\n"
 "    "
 
 #. module: base
@@ -5163,7 +5163,7 @@ msgstr ""
 "Beheer verlof in loonstroken\n"
 "============================\n"
 "\n"
-"Met deze applicatie kun je vrije tijd integreren in loonstroken."
+"Met deze applicatie kun je verlof integreren in loonstroken."
 
 #. module: base
 #: model:ir.module.module,description:base.module_stock_dropshipping
@@ -11701,7 +11701,7 @@ msgstr "Automatische installatie vereist"
 #. module: base
 #: model:ir.module.module,summary:base.module_partner_autocomplete
 msgid "Auto-complete partner companies' data"
-msgstr "Gegevens van partnerbedrijven automatisch aanvullen"
+msgstr "Bedrijfsgegevens automatisch aanvullen"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_base_automation
@@ -16590,7 +16590,7 @@ msgstr "Financiën/Verzekering"
 #: model:ir.module.module,summary:base.module_data_merge_crm
 #: model:ir.module.module,summary:base.module_data_merge_utm
 msgid "Find duplicate records and merge them"
-msgstr "Vind dubbele records en voed ze samen"
+msgstr "Vind dubbele records en voeg ze samen"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_web_unsplash
@@ -23893,6 +23893,20 @@ msgstr ""
 "Modulebewerkingen zijn momenteel niet mogelijk. Probeer het later opnieuw of neem contact op met uw systeembeheerder."
 
 #. module: base
+#: code:addons/base/models/ir_actions_report.py:0
+#, python-format
+msgid ""
+"Odoo is unable to merge the PDFs attached to the following records:\n"
+"%s\n"
+"\n"
+"Please exclude them from the selection to continue. It's possible to still retrieve those PDFs by selecting each of the affected records individually, which will avoid merging."
+msgstr ""
+"Odoo is niet in staat de PDF's samen te voegen die bij de volgende records zijn gevoegd:\n"
+"%s\n"
+"\n"
+"Sluit ze uit van de selectie om door te gaan. Het is mogelijk om die pdf's nog steeds op te halen door elk van de betrokken records afzonderlijk te selecteren, waardoor samenvoeging wordt voorkomen."
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_odoo_referral
 msgid "Odoo referral program"
 msgstr "Odoo verwijzingsprogramma"
@@ -27906,7 +27920,7 @@ msgstr "Naam staat/provincie"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_country__state_required
 msgid "State Required"
-msgstr "Staat / Provincie verpliicht"
+msgstr "Staat / Provincie verplicht"
 
 #. module: base
 #: model:res.country,name:base.ps
@@ -28832,6 +28846,12 @@ msgid "The internal user in charge of this contact."
 msgstr "De interne gebruiker verantwoordelijk voor dit contract."
 
 #. module: base
+#: code:addons/base/models/res_country.py:106
+#, python-format
+msgid "The layout contains an invalid format key"
+msgstr "De lay-out bevat een ongeldige indelingssleutel"
+
+#. module: base
 #: model:ir.model.fields,help:base.field_ir_model__inherited_model_ids
 msgid "The list of models that extends the current model."
 msgstr "De lijst met modellen welke het huidige module uitbreiden"
@@ -29136,7 +29156,7 @@ msgstr "Thema store"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
 msgid "There are no more contacts to merge for this request"
-msgstr "Er zijn geen contacten meer om samen te voegen in dit verzoek..."
+msgstr "Er zijn geen contacten meer om samen te voegen in dit verzoek."
 
 #. module: base
 #: code:addons/base/models/ir_filters.py:0
@@ -29618,7 +29638,7 @@ msgstr "Titel"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__date_to
 msgid "To"
-msgstr "Aan"
+msgstr "T/m"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_actions_todo__state__open
@@ -31737,6 +31757,15 @@ msgstr ""
 " editeren onder het Instellingen / Gebruikers menu."
 
 #. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_currency_form
+msgid ""
+"You won't be able to reduce the number of decimal places of a currency which"
+" has already been used to make accounting entries."
+msgstr ""
+"U kunt het aantal decimalen van een valuta die al is gebruikt om boekingen "
+"te maken, niet verminderen."
+
+#. module: base
 #: code:addons/base/models/ir_mail_server.py:0
 #, python-format
 msgid ""
@@ -31836,7 +31865,7 @@ msgstr "en"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_partner_kanban_view
 msgid "at"
-msgstr "op"
+msgstr "bij"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_model_fields__ttype__binary
@@ -31909,7 +31938,7 @@ msgstr "Bijv. Engels"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid "e.g. Mister"
-msgstr "bijvoorbeeld De heer"
+msgstr "Bijv. De heer"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
