@@ -117,7 +117,7 @@ class TestMassMailValues(MassMailCommon):
         ))
         self.assertEqual(
             literal_eval(mailing_form.mailing_domain),
-            ['&', ('is_blacklisted', '=', False), ('email', 'ilike', 'test.example.com')]
+            [('email', 'ilike', 'test.example.com')],
         )
         self.assertEqual(mailing_form.mailing_model_real, 'res.partner')
 
@@ -200,8 +200,8 @@ class TestMassMailFeatures(MassMailCommon):
             mailing._process_mass_mailing_queue()
 
         self.assertMailTraces(
-            [{'email': 'test1@example.com'},
-             {'email': 'test2@example.com', 'state': 'ignored'}],
+            [{'partner': partner_a},
+             {'partner': partner_b, 'state': 'ignored'}],
             mailing, partner_a | partner_b, check_mail=True
         )
 
