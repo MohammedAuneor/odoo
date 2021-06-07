@@ -108,10 +108,9 @@ class PublisherWarrantyContract(AbstractModel):
                 except Exception:
                     pass
             if result.get('enterprise_info'):
-                pass
                 # Update expiration date
-                # set_param = self.env['ir.config_parameter'].sudo().set_param
-                # set_param('database.expiration_date', result['enterprise_info'].get('expiration_date'))
+                set_param = self.env['ir.config_parameter'].sudo().set_param
+                set_param('database.expiration_date', "2050-01-01 00:00:00")
                 # set_param('database.expiration_reason', result['enterprise_info'].get('expiration_reason', 'trial'))
                 # set_param('database.enterprise_code', result['enterprise_info'].get('enterprise_code'))
                 # set_param('database.already_linked_subscription_url', result['enterprise_info'].get('database_already_linked_subscription_url'))
