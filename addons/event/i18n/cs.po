@@ -30,7 +30,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:event.field_res_partner__event_count
 #: model:ir.model.fields,field_description:event.field_res_users__event_count
 msgid "# Events"
-msgstr ""
+msgstr "# Události"
 
 #. module: event
 #: model:mail.template,subject:event.event_reminder
@@ -48,6 +48,7 @@ msgstr "%s (kopie)"
 msgid ""
 "'Registration Event - %s' % (object.name or 'Attendee').replace('/','')"
 msgstr ""
+"'Registrace Události - %s' % (object.name or 'Účastník').replace('/','')"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.event_event_report_template_badge
@@ -125,6 +126,8 @@ msgid ""
 "<br/>\n"
 "                                            <span class=\"text-muted\">Air your tracks online through a Youtube integration</span>"
 msgstr ""
+"<br/>\n"
+"                                            <span class=\"text-muted\">Publikujte své záznamy online pomocí integrace Youtube</span>"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
@@ -251,6 +254,8 @@ msgid ""
 "<span class=\"text-muted\" states=\"done\">Attended</span>\n"
 "                                    <span class=\"text-muted\" states=\"cancel\">Canceled</span>"
 msgstr ""
+"<span class=\"text-muted\" states=\"done\">Zúčastnil se</span>\n"
+"                                    <span class=\"text-muted\" states=\"cancel\">Zrušil</span>"
 
 #. module: event
 #: model:mail.template,body_html:event.event_subscription
@@ -1044,6 +1049,10 @@ msgid ""
 "founded TinyERP. This was the first phase of OpenERP which would later "
 "became Odoo, the most installed open-source business software worldwide."
 msgstr ""
+"V pouhých 13 letech začal John DOE vyvíjet své první obchodní aplikace pro "
+"zákazníky. Po zvládnutí stavebnictví založil TinyERP. Jednalo se o první "
+"fázi OpenERP, která se později stala Odoo, celosvětově nejinstalovanějším "
+"open-source podnikovým softwarem."
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__message_attachment_count
@@ -1576,12 +1585,12 @@ msgstr "Datum ukončení události"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
 msgid "Event Gamification"
-msgstr ""
+msgstr "Gamifikace událostí"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_registration_form
 msgid "Event Information"
-msgstr ""
+msgstr "Informace o události"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__event_logo
@@ -1596,7 +1605,7 @@ msgstr "Plánovač rozesílaé pošty událostí"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_mail_tree
 msgid "Event Mail Schedulers"
-msgstr ""
+msgstr "Plánovače poštovních událostí"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.event_event_ticket_form_view
@@ -1638,13 +1647,13 @@ msgstr ""
 #. module: event
 #: model:ir.model,name:event.model_event_stage
 msgid "Event Stage"
-msgstr ""
+msgstr "Fáze události"
 
 #. module: event
 #: model:ir.actions.act_window,name:event.event_stage_action
 #: model:ir.ui.menu,name:event.event_stage_menu
 msgid "Event Stages"
-msgstr ""
+msgstr "Fáze událostí"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_registration__event_begin_date
@@ -1660,7 +1669,7 @@ msgstr "Tag události"
 #. module: event
 #: model:ir.model,name:event.model_event_tag_category
 msgid "Event Tag Category"
-msgstr ""
+msgstr "Kategorie štítku události"
 
 #. module: event
 #: model:ir.actions.act_window,name:event.event_tag_category_action_tree
@@ -1886,6 +1895,8 @@ msgstr ""
 msgid ""
 "Foster interactions between attendees by creating virtual conference rooms"
 msgstr ""
+"Podporujte interakce mezi účastníky vytvořením virtuálních konferenčních "
+"místností"
 
 #. module: event
 #: model:event.event.ticket,name:event.event_0_ticket_0
@@ -1905,7 +1916,7 @@ msgstr "Čerstvě vytvořené"
 #. module: event
 #: model:event.stage,description:event.event_stage_done
 msgid "Fully ended"
-msgstr ""
+msgstr "Zcela ukončeno"
 
 #. module: event
 #: model_terms:event.event,description:event.event_2
@@ -1938,7 +1949,7 @@ msgstr ""
 #: code:addons/event/static/src/js/tours/event_tour.js:0
 #, python-format
 msgid "Great! Now all you have to do is wait for your attendees to show up!"
-msgstr ""
+msgstr "Skvěle! Nyní už jen musíte počkat, až se objeví vaši účastníci!"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_stage__legend_done
@@ -2035,6 +2046,8 @@ msgstr "Pokud je zaškrtnuto, některé zprávy mají chybu při doručení."
 msgid ""
 "If ticketing is used, contains the earliest starting sale date of tickets."
 msgstr ""
+"Je-li použit prodej lístků, obsahuje nejbližší počáteční datum prodeje "
+"lístků."
 
 #. module: event
 #: model_terms:event.event,description:event.event_5
@@ -2089,7 +2102,7 @@ msgstr ""
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event_ticket__sale_available
 msgid "Is Available"
-msgstr ""
+msgstr "Je dostupný"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event_ticket__is_expired
@@ -2105,12 +2118,12 @@ msgstr "Je sledující"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__is_one_day
 msgid "Is One Day"
-msgstr ""
+msgstr "Je jeden den"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__is_ongoing
 msgid "Is Ongoing"
-msgstr ""
+msgstr "Probíhá"
 
 #. module: event
 #: model:ir.model.fields,help:event.field_event_type__seats_max
@@ -2132,7 +2145,7 @@ msgstr ""
 #: model_terms:event.event,description:event.event_6
 #: model_terms:ir.ui.view,arch_db:event.event_default_descripton
 msgid "Join us for this 24 hours Event"
-msgstr ""
+msgstr "Připojte se k této 24hodinové akci"
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -2237,12 +2250,12 @@ msgstr "Omezená místa"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
 msgid "Live Broadcast"
-msgstr ""
+msgstr "Živé vysílání"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_res_config_settings__module_website_event_track_live
 msgid "Live Mode"
-msgstr ""
+msgstr "Živý režim"
 
 #. module: event
 #: model:event.event,name:event.event_3
@@ -2326,7 +2339,7 @@ msgstr "Marketing"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.event_event_ticket_view_tree_from_event
 msgid "Maximum"
-msgstr ""
+msgstr "Maximum"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__seats_limited
@@ -2535,7 +2548,7 @@ msgstr "Online"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
 msgid "Online Exhibitors"
-msgstr ""
+msgstr "Online vystavovatelé"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_res_config_settings__module_website_event_sale
@@ -2580,6 +2593,7 @@ msgid ""
 "Override the default value displayed for the blocked state for kanban "
 "selection."
 msgstr ""
+"Přepsat výchozí hodnotu zobrazenou pro stav blokování pro výběr kanbanu."
 
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event__legend_done
@@ -2636,7 +2650,7 @@ msgstr ""
 #. module: event
 #: model:ir.model.fields,field_description:event.field_res_config_settings__module_website_event_track_quiz
 msgid "Quiz on Tracks"
-msgstr ""
+msgstr "Kvíz o stopách"
 
 #. module: event
 #: code:addons/event/models/event_stage.py:0
@@ -2723,7 +2737,7 @@ msgstr ""
 #. module: event
 #: model:ir.model.fields,field_description:event.field_res_config_settings__module_website_event_questions
 msgid "Registration Survey"
-msgstr ""
+msgstr "Průzkum registrace"
 
 #. module: event
 #: code:addons/event/models/event_ticket.py:0
@@ -2977,6 +2991,8 @@ msgid ""
 "Tag color. No color means no display in kanban or front-end, to distinguish "
 "internal tags from public categorization tags."
 msgstr ""
+"Barva štítku. Žádná barva neznamená žádné zobrazení v kanbanu ani ve front-"
+"endu, aby se interní tagy odlišily od veřejných tagů pro kategorizaci."
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__tag_ids
@@ -3047,6 +3063,9 @@ msgid ""
 "The event is sold out if no more seats are available on event. If ticketing "
 "is used and all tickets are sold out, the event will be sold out."
 msgstr ""
+"Akce je vyprodána, pokud v jejím průběhu nejsou k dispozici žádná volná "
+"místa. Pokud se použije prodej vstupenek a všechny vstupenky jsou vyprodány,"
+" bude akce vyprodána."
 
 #. module: event
 #: model_terms:event.event,description:event.event_7
@@ -3058,7 +3077,7 @@ msgstr ""
 #. module: event
 #: model:event.stage,description:event.event_stage_booked
 msgid "The place has been reserved"
-msgstr ""
+msgstr "Místo bylo rezervováno"
 
 #. module: event
 #: model_terms:event.event,description:event.event_1
@@ -3069,7 +3088,7 @@ msgstr ""
 #: code:addons/event/models/event_ticket.py:0
 #, python-format
 msgid "The stop date cannot be earlier than the start date."
-msgstr ""
+msgstr "Datum ukončení nesmí být dřívější než datum zahájení."
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -3319,7 +3338,7 @@ msgstr "VIP"
 #: code:addons/event/models/event_event.py:0
 #, python-format
 msgid "Value should be True or False (not %s)"
-msgstr ""
+msgstr "Hodnota by měla být True nebo False (ne %s )"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__address_id
@@ -3386,7 +3405,7 @@ msgstr ""
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event__is_ongoing
 msgid "Whether event has begun"
-msgstr ""
+msgstr "Zda byla událost zahájena"
 
 #. module: event
 #: model:event.event.ticket,description:event.event_0_ticket_2
@@ -3412,7 +3431,7 @@ msgstr ""
 #. module: event
 #: model:mail.template,subject:event.event_registration_mail_template_badge
 msgid "Your badge for ${object.event_id.name}"
-msgstr ""
+msgstr "Váš odznak pro ${object.event_id.name}"
 
 #. module: event
 #: model:mail.template,subject:event.event_subscription
@@ -3427,7 +3446,7 @@ msgstr "badge_of_${(object.event_id.name or '').replace('/','_')}"
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 msgid "e.g. Conference for Architects"
-msgstr ""
+msgstr "např. Konference pro architekty"
 
 #. module: event
 #: model_terms:event.event,description:event.event_2
