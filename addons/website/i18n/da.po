@@ -18,9 +18,9 @@
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2020
 # Ejner Sønniksen <ejner@vkdata.dk>, 2020
 # lhmflexerp <lhm@flexerp.dk>, 2020
-# Martin Trigaux, 2020
 # Sanne Kristensen <sanne@vkdata.dk>, 2020
 # Mads Søndergaard, 2020
+# Martin Trigaux, 2021
 # Mads Søndergaard <mads@vkdata.dk>, 2021
 # 
 msgid ""
@@ -1210,6 +1210,13 @@ msgid "Action"
 msgstr "Handling"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/backend/res_config_settings.js:0
+#, python-format
+msgid "Activate anyway"
+msgstr "Aktiver alligevel"
+
+#. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__active
 #: model:ir.model.fields,field_description:website.field_website_page__active
 #: model:ir.model.fields,field_description:website.field_website_rewrite__active
@@ -1595,6 +1602,15 @@ msgid "Auto"
 msgstr "Auto"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_popup_options
+msgid ""
+"Automatically opens the pop-up if the user stays on a page longer than the "
+"specified time."
+msgstr ""
+"Åbner automatisk et pop-up vindue hvis brugeren bliver på siden længere end "
+"den specificerede tidsperiode."
+
+#. module: website
 #: model:ir.model.fields,field_description:website.field_website__auto_redirect_lang
 msgid "Autoredirect Language"
 msgstr "Auto-diriger sprog"
@@ -1799,7 +1815,7 @@ msgstr "Byggeklods system"
 #: code:addons/website/static/src/js/menu/new_content.js:0
 #, python-format
 msgid "Building your %s"
-msgstr ""
+msgstr "Bygger din %s"
 
 #. module: website
 #. openerp-web
@@ -2013,6 +2029,13 @@ msgstr "Betal nu og få $20 trukket fra din første ordre."
 #, python-format
 msgid "Check your configuration."
 msgstr "Tjek din konfiguration."
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/editor/snippets.editor.js:0
+#, python-format
+msgid "Check your connexion and try again"
+msgstr "Tjek din forbindelse og prøv igen"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -3015,6 +3038,13 @@ msgid "Display this website when users visit this domain"
 msgstr "Vis denne hjemmeside når brugere besøger dette domæne"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/backend/res_config_settings.js:0
+#, python-format
+msgid "Do not activate"
+msgstr "Aktiver ej"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_banner
 msgid "Do something"
 msgstr "Gør noget"
@@ -3299,6 +3329,13 @@ msgstr "Tomt felt navn i %r"
 #, python-format
 msgid "Enable billing on your Google Project"
 msgstr "Aktiver fakturering på dit Google Projekt"
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/editor/snippets.editor.js:0
+#, python-format
+msgid "Enter an API Key"
+msgstr "Angiv en API Nøgle"
 
 #. module: website
 #. openerp-web
@@ -4564,6 +4601,13 @@ msgstr "Interaktion Historik"
 #: model_terms:ir.ui.view,arch_db:website.s_table_of_content
 msgid "Intuitive system"
 msgstr "Intuitivt system"
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/editor/snippets.editor.js:0
+#, python-format
+msgid "Invalid API Key. The following error was returned by Google:"
+msgstr "Ugyldig API nøgle. Den følgende fejl blev returneret fra Google:"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team
@@ -6569,6 +6613,11 @@ msgstr ""
 "hjemmeside. Odoos integration med Unsplash, som har millioner af gratis "
 "billeder af høj kvalitet, hjælper dig med at finde det perfekte billede med "
 "blot et par klik."
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.website_search_box
+msgid "Search..."
+msgstr "Søg..."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_features

@@ -21,11 +21,11 @@
 # 高木正勝 <masakatsu.takagi@pro-spire.co.jp>, 2020
 # Kohji Katayama <kohji.katayama@dreamyard.co.jp>, 2020
 # Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2020
-# Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2020
-# Ryoko Tsuda <ryoko@quartile.co>, 2020
-# Noma Yuki, 2020
 # Tsuda Ryoko <ryoko04nov@gmail.com>, 2021
 # Martin Trigaux, 2021
+# Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2021
+# Noma Yuki, 2021
+# Ryoko Tsuda <ryoko@quartile.co>, 2021
 # 
 msgid ""
 msgstr ""
@@ -33,7 +33,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-25 10:15+0000\n"
 "PO-Revision-Date: 2020-09-07 08:09+0000\n"
-"Last-Translator: Martin Trigaux, 2021\n"
+"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2021\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,7 +163,7 @@ msgstr "ここにより大きな数字を適用した方が良い場合もあり
 #: code:addons/account/wizard/account_resequence.py:0
 #, python-format
 msgid "... (%s other)"
-msgstr ""
+msgstr "... (%s 他)"
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_15days
@@ -400,7 +400,7 @@ msgid ""
 "'/')]}\">Draft</span>"
 msgstr ""
 "<span attrs=\"{'invisible': ['|', ('state', '!=', 'draft'), ('name', '!=', "
-"'/')]}\">下書き</span>"
+"'/')]}\">ドラフト</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_invoice_send_wizard_form
@@ -5240,10 +5240,8 @@ msgstr "州"
 #. openerp-web
 #: code:addons/account/static/src/js/tours/account.js:0
 #, python-format
-msgid ""
-"Fill in the details of the line.<br><i>Tip: all the details can be set "
-"automatically if you configure your <b>products</b>.</i>"
-msgstr "行の詳細を記入<br> <i>のヒント:、<b>製品</b>を設定した場合、すべての詳細を自動的に設定することができます。</ I>。"
+msgid "Fill in the details of the line."
+msgstr "行の詳細を記入してください"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_analytic_line__general_account_id
@@ -5510,7 +5508,7 @@ msgstr "無料"
 #: model:ir.model.fields,field_description:account.field_account_tour_upload_bill__email_from
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_form
 msgid "From"
-msgstr "移動元"
+msgstr "From"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
@@ -7796,7 +7794,7 @@ msgstr "新しい移動"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "New Transaction"
-msgstr ""
+msgstr "新しいトランザクション"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_resequence_wizard__new_values
@@ -8016,7 +8014,7 @@ msgstr "11月"
 #: code:addons/account/static/src/js/tours/account.js:0
 #, python-format
 msgid "Now, we'll create your first invoice."
-msgstr ""
+msgstr "最初の請求書を作成します。"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__num_journals_without_account
@@ -8366,7 +8364,7 @@ msgstr "オプション"
 #: code:addons/account/wizard/account_tour_upload_bill.py:0
 #, python-format
 msgid "Or send a bill to %s@%s"
-msgstr ""
+msgstr "あるいは請求書を %s@%sに送ります"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_resequence_wizard__ordering
@@ -8396,7 +8394,7 @@ msgstr "オリジナル手形"
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree_grouped
 msgid "Original Currency"
-msgstr ""
+msgstr "もとの通貨"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__payment_id
@@ -11481,7 +11479,7 @@ msgstr "請求書の会計日が税ロック日より前の場合にメッセー
 msgid ""
 "Technical field used to display an alert on invoices if there is at least a "
 "matching amount in any supsense account."
-msgstr "Supsenseアカウントに少なくとも一致する金額がある場合に、請求書にアラートを表示するために使用されるテクニカルフィールド。"
+msgstr "Suspenseアカウントに少なくとも一致する金額がある場合に、請求書にアラートを表示するために使用されるテクニカルフィールド。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__sequence_override_regex
@@ -11720,6 +11718,12 @@ msgstr ""
 "Type'は、さまざまなタイプのアカウントで利用可能な機能に使用されます。流動性タイプは現金または銀行口座用であり、買掛金/売掛金はベンダー/顧客アカウント用です。"
 
 #. module: account
+#: code:addons/account/models/account_move.py:0
+#, python-format
+msgid "The Bill/Refund date is required to validate this document."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement__country_code
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__country_code
 #: model:ir.model.fields,help:account.field_account_journal__country_code
@@ -11757,6 +11761,15 @@ msgstr "アカウント%(account_name)s は複数のジャーナルの間で共�
 #, python-format
 msgid "The account %s (%s) is deprecated."
 msgstr "アカウント%s (%s) が廃止されました。"
+
+#. module: account
+#: code:addons/account/models/account_account.py:0
+#, python-format
+msgid ""
+"This account is configured in %(journal_names)s journal(s) (ids "
+"%(journal_ids)s) as payment debit or credit account. This means that this "
+"account's type should be reconcilable."
+msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_account.py:0
@@ -13031,7 +13044,7 @@ msgstr "運送"
 #: code:addons/account/wizard/account_tour_upload_bill.py:0
 #, python-format
 msgid "Try a sample vendor bill"
-msgstr ""
+msgstr "サンプルの仕入先請求書を試す"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__user_type_id
@@ -13236,7 +13249,7 @@ msgstr "アップロード"
 #: code:addons/account/wizard/account_tour_upload_bill.py:0
 #, python-format
 msgid "Upload your own bill"
-msgstr ""
+msgstr "自前の請求書をアップロードする"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_chart_template__use_anglo_saxon
@@ -14130,6 +14143,12 @@ msgid ""
 "You have to define an 'Internal Transfer Account' in your cash register's "
 "journal."
 msgstr "キャッシュレジスターの仕訳に'内部振替口座'を定義する必要があります。"
+
+#. module: account
+#: code:addons/account/models/account_move.py:0
+#, python-format
+msgid "The entry %s (id %s) is already posted."
+msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_move.py:0

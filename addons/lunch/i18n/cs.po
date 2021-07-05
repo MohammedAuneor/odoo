@@ -1776,6 +1776,14 @@ msgstr ""
 "nebo změnit kategorii produktu."
 
 #. module: lunch
+#: code:addons/lunch/models/lunch_product.py:0
+#, python-format
+msgid ""
+"The product supplier is archived. The user have to unarchive the supplier or"
+" change the supplier of the product."
+msgstr ""
+
+#. module: lunch
 #: model:ir.model.fields,help:lunch.field_lunch_supplier__responsible_id
 msgid ""
 "The responsible is the person that will order lunch for everyone. It will be"
@@ -2039,7 +2047,7 @@ msgstr ""
 #: code:addons/lunch/static/src/xml/lunch_templates.xml:0
 #, python-format
 msgid "Your Account"
-msgstr ""
+msgstr "Váš účet"
 
 #. module: lunch
 #. openerp-web
@@ -2056,6 +2064,7 @@ msgstr ""
 #, python-format
 msgid "Your favorite meals will be created based on your last orders."
 msgstr ""
+"Vaše oblíbená jídla budou vytvořena na základě vašich posledních objednávek."
 
 #. module: lunch
 #. openerp-web

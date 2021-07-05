@@ -6634,6 +6634,8 @@ msgid ""
 "\n"
 "This module is used for Online bank synchronization."
 msgstr ""
+"\n"
+"Tento modul sa používa na online synchronizáciu banky."
 
 #. module: base
 #: model:ir.module.module,description:base.module_approvals
@@ -7731,22 +7733,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid ""
 "<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'contact')]}\">Company Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'invoice')]}\">Invoice Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'delivery')]}\">Delivery Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'other')]}\">Other Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'private')]}\">Private Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', False)]}\">Address</b>\n"
+"                                <b attrs=\"{'invisible': [('company_type', '!=', 'company')]}\">Company Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('type', '!=', 'invoice'), ('company_type', '=', 'company')]}\">Invoice Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('type', '!=', 'delivery'), ('company_type', '=', 'company')]}\">Delivery Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('type', '!=', 'other'), ('company_type', '=', 'company')]}\">Other Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('type', '!=', 'private'), ('company_type', '=', 'company')]}\">Private Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('type', 'not in', (False, 'contact')), ('company_type', '=', 'company')]}\">Address</b>\n"
 "                            </span>"
 msgstr ""
-"<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'contact')]}\">Adresa firmy</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'invoice')]}\">Fakturačná adresa</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'delivery')]}\">Adresa dodania</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'other')]}\">Iná adresa</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'private')]}\">Súkromná adresa</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', False)]}\">Adresa</b>\n"
-"                            </span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_update
@@ -14990,7 +14984,7 @@ msgstr ""
 #: model:ir.ui.menu,name:base.menu_wizard_update_translations
 #: model_terms:ir.ui.view,arch_db:base.wizard_update_translations
 msgid "Generate Missing Terms"
-msgstr "Generuj Chýbajúce Výrazy"
+msgstr "Generuj chýbajúce výrazy"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.form_res_users_key_description
@@ -20887,7 +20881,7 @@ msgstr "Online schôdzka"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_online_synchronization
 msgid "Online Bank Statement Synchronization"
-msgstr ""
+msgstr "Online synchronizácia výpisu z účtu"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_sale
@@ -24212,7 +24206,7 @@ msgstr "Sierra Leone"
 #: model:ir.module.category,name:base.module_category_sales_sign
 #: model:ir.module.module,shortdesc:base.module_sign
 msgid "Sign"
-msgstr "E-podpis"
+msgstr "e-podpis"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_contract_salary
@@ -28155,8 +28149,8 @@ msgstr "Nemôžte aktivovať superuser používateľa."
 #. module: base
 #: code:addons/base/models/res_partner.py:0
 #, python-format
-msgid "You cannot archive a contact linked to an internal user."
-msgstr "Nemôžete archivovať kontakt prelinkovaný s interným užívateľom."
+msgid "You cannot archive a contact linked to a portal or internal user."
+msgstr ""
 
 #. module: base
 #: code:addons/base/models/res_partner.py:0

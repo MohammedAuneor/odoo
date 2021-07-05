@@ -5064,8 +5064,7 @@ msgstr ""
 #: code:addons/account/static/src/js/tours/account.js:0
 #, python-format
 msgid ""
-"Fill in the details of the line.<br><i>Tip: all the details can be set "
-"automatically if you configure your <b>products</b>.</i>"
+"Fill in the details of the line."
 msgstr ""
 
 #. module: account
@@ -11515,6 +11514,14 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "The account %s (%s) is deprecated."
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account_account.py:0
+#, python-format
+msgid ""
+"This account is configured in %(journal_names)s journal(s) (ids %(journal_ids)s) as payment debit or credit account. "
+"This means that this account's type should be reconcilable."
 msgstr ""
 
 #. module: account
