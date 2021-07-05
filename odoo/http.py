@@ -1499,6 +1499,8 @@ def db_filter(dbs, httprequest=None):
         # use the value of --database as a comma seperated list of exposed databases.
         exposed_dbs = set(db.strip() for db in odoo.tools.config['db_name'].split(','))
         dbs = sorted(exposed_dbs.intersection(dbs))
+    if not dbs: # modification pour avoir le multisite qui marche pour localenbocal
+        dbs = ['localenbocal']
     return dbs
 
 def db_monodb(httprequest=None):
